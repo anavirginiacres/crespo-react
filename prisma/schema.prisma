@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id            Int           @id @default(autoincrement())
+  name          String
+  icon          String
+  subcategories Subcategory[]
+  products      Product[]
+
+  @@map("Categories")
+}
+
+model Subcategory {
+  id          Int      @id @default(autoincrement())
+  id_category Int
+  name        String
+  category    Category @relation(fields: [id_category], references: [id], onDelete: Restrict)
+  products    Product[]
+
+  @@map("Subcategories")
+}
+
+model Product {
+  id            Int        @id @default(autoincrement())
+  id_category   Int
+  id_subcategory Int
+  name          String
+  caption       String?
+  image         String?
+  materials     String?
+  measures      String?
+  quantity      String?
+  details       String?
+  caution       String?
+  colors        String?
+  delay         String?
+  tags          String?
+  category      Category   @relation(fields: [id_category], references: [id], onDelete: Restrict)
+  subcategory   Subcategory @relation(fields: [id_subcategory], references: [id], onDelete: Restrict)
+  images        Image[]
+  cartItems     CartItem[]
+
+  @@map("Products")
+}
+
+model Image {
+  id         Int     @id @default(autoincrement())
+  id_product Int
+  src        String
+  product    Product @relation(fields: [id_product], references: [id], onDelete: Cascade)
+
+  @@map("Images")
+}
+
+model Cart {
+  id       Int        @id @default(autoincrement())
+  name     String
+  phone    String
+  email    String?
+  details  String?
+  datetime String
+  items    CartItem[]
+
+  @@map("Carts")
+}
+
+model CartItem {
+  id         Int     @id @default(autoincrement())
+  id_cart    Int
+  id_product Int
+  details    String?
+  materials  String?
+  measures   String?
+  quantity   String?
+  colors     String?
+  cart       Cart    @relation(fields: [id_cart], references: [id], onDelete: Cascade)
+  product    Product @relation(fields: [id_product], references: [id], onDelete: Restrict)
+
+  @@map("CartItems")
+}
