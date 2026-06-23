@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.scss";
-import Link from "next/link";
-import Image from "next/image";
-import NavLinks from "@/components/NavLinks";
+import Nav from "@/components/Navigation/Nav";
+import { CartProvider } from "@/context/CartContext";
 import logoIcon from "@/styles/images/logo-redondo.png";
-import logoHeader from "@/styles/images/logo-original.png";
 
 export const metadata: Metadata = {
   title: "FF Crespo",
@@ -23,14 +21,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        <header role="banner">
-          <nav role="navigation">
-            <Link href="/"><Image src={logoHeader} alt="FF Crespo" className="logo-header" /></Link>
-            <NavLinks />
-          </nav>
-        </header>
+        <CartProvider>
+          <Nav />
 
-        {children}
+          {children}
+        </CartProvider>
 
         <footer
           style={{
