@@ -19,6 +19,42 @@
   left: 0;
   z-index: 100;
   box-sizing: border-box;
+  transition:
+    box-shadow $transition-lg,
+    transform $transition-lg;
+}
+
+.headerFixed {
+  position: fixed;
+  animation: headerSlideIn $transition-3xl ease forwards;
+  box-shadow: $box-shadow-xl;
+
+  .navBar {
+    background: rgba($white, 0.92);
+    backdrop-filter: blur(16px) saturate(160%);
+    border-bottom-color: rgba($black, 0.06);
+  }
+
+  .subNavigation {
+    box-shadow: 0 4px 12px rgba($black, 0.08);
+  }
+}
+
+@keyframes headerSlideIn {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .headerFixed {
+    animation: none;
+    transform: translateY(0);
+  }
 }
 
 .navBar {
@@ -28,6 +64,10 @@
   justify-content: center;
   box-sizing: border-box;
   border-bottom: 1px solid $brand-grey;
+  transition:
+    background $transition-lg,
+    border-color $transition-lg,
+    backdrop-filter $transition-lg;
 }
 
 .nav {

@@ -23,6 +23,14 @@ export default function NavBar({ categories }: NavBarProps) {
   const headerRef = useRef<HTMLElement>(null);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const header = headerRef.current;
@@ -59,7 +67,11 @@ export default function NavBar({ categories }: NavBarProps) {
 
   return (
     <>
-      <header role="banner" className={styles.header} ref={headerRef}>
+      <header
+        role="banner"
+        ref={headerRef}
+        className={`${styles.header}${isScrolled ? ` ${styles.headerFixed}` : ""}`}
+      >
         <div className={styles.navBar}>
           <nav role="navigation" className={styles.nav}>
             <Link href="/" className={styles.logoLink}>
