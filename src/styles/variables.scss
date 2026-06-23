@@ -1,0 +1,103 @@
+@use "../styles/typos/fonts";
+
+// colors
+$primary: #1a1a1a;
+$black: #000000;
+$white: #ffffff;
+
+$brand-pink: #e20078;
+$brand-blue: #03a4ed;
+$brand-yellow: #ffdf0a;
+
+$brand-black: #2a2a2a;
+$brand-light-grey: #fafafa;
+$brand-grey: #ebe9e5;
+$brand-dark-grey: #afafaf;
+
+// font families
+$font-default: "Nunito", sans-serif;
+$font-primary: "Anton", sans-serif;
+$font-secondary: "Clear Sans", sans-serif;
+$font-drawn: "Beyond Infinity", sans-serif;
+
+// font sizes
+$fs-12: 12px;
+$fs-14: 14px;
+$fs-16: 16px;
+$fs-24: 24px;
+$fs-32: 32px;
+$fs-48: 48px;
+
+// font weights
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-bold: 700;
+
+// line heights
+$lh-12: 12px;
+$lh-14: 14px;
+$lh-16: 16px;
+$lh-24: 24px;
+$lh-32: 32px;
+$lh-48: 48px;
+
+// spacing
+$spacing-1: 1px;
+$spacing-2: 2px;
+$spacing-4: 4px;
+$spacing-8: 8px;
+$spacing-16: 16px;
+$spacing-32: 32px;
+$spacing-64: 64px;
+
+// borders
+$border-width-sm: 1px;
+$border-width-md: 2px;
+$border-width-lg: 4px;
+$border-width-xl: 8px;
+$border-width-2xl: 16px;
+$border-width-3xl: 32px;
+$border-width-4xl: 64px;
+
+// border radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 16px;
+$border-radius-xl: 32px;
+$border-radius-2xl: 64px;
+
+// box shadow
+$box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$box-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+$box-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+$box-shadow-3xl: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+$box-shadow-4xl: 0 45px 100px -20px rgba(0, 0, 0, 0.4);
+
+// transition
+$transition-sm: 0.1s ease-in-out;
+$transition-md: 0.2s ease-in-out;
+$transition-lg: 0.3s ease-in-out;
+$transition-xl: 0.4s ease-in-out;
+$transition-2xl: 0.5s ease-in-out;
+$transition-3xl: 0.6s ease-in-out;
+$transition-4xl: 0.7s ease-in-out;
+
+// animation
+$animation-sm: 0.1s ease-in-out;
+$animation-md: 0.2s ease-in-out;
+$animation-lg: 0.3s ease-in-out;
+$animation-xl: 0.4s ease-in-out;
+$animation-2xl: 0.5s ease-in-out;
+$animation-3xl: 0.6s ease-in-out;
+$animation-4xl: 0.7s ease-in-out;
+
+// breakpoints
+$breakpoint-sm: 767px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+$breakpoint-3xl: 1920px;
+$breakpoint-4xl: 2560px;

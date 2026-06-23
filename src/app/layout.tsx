@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "./globals.scss";
+import Nav from "@/components/Navigation/Nav";
+import { CartProvider } from "@/context/CartContext";
+import logoIcon from "@/styles/images/logo-redondo.png";
 
 export const metadata: Metadata = {
-  title: "Crespo React Shop",
-  description: "Demo de rutas con Next.js y TypeScript",
+  title: "FF Crespo",
+  description: "Industria Gráfica y Textil",
+  icons: {
+    icon: logoIcon.src,
+    apple: logoIcon.src,
+  },
 };
 
 export default function RootLayout({
@@ -14,23 +21,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        <header
-          style={{
-            padding: "1rem 2rem",
-            backgroundColor: "#0f172a",
-            color: "white",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <span style={{ fontWeight: 600 }}>Crespo React Shop</span>
-          <span style={{ fontSize: "0.9rem", opacity: 0.8 }}>
-            Demo Next.js + TypeScript
-          </span>
-        </header>
+        <CartProvider>
+          <Nav />
 
-        {children}
+          {children}
+        </CartProvider>
 
         <footer
           style={{
@@ -41,7 +36,7 @@ export default function RootLayout({
             color: "#6b7280",
           }}
         >
-          © {new Date().getFullYear()} Crespo React. Todos los derechos reservados.
+          © {new Date().getFullYear()} FF CRESPO. Todos los derechos reservados.
         </footer>
       </body>
     </html>

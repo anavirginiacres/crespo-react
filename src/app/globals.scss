@@ -1,0 +1,45 @@
+@use "../styles/variables" as *;
+
+:root {
+  --header-height: 104px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-default;
+  font-size: $fs-16;
+  line-height: $lh-14;
+
+  @media screen and (max-width: $breakpoint-sm) {
+    font-size: $fs-14;
+    line-height: $lh-12;
+  }
+}
+
+body {
+  padding: 0 32px 32px;
+  background-color: $white;
+  color: $brand-black;
+}
+
+a {
+  color: $brand-blue;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+main {
+  max-width: 1200px;
+  margin: var(--header-height) auto 0;
+  background-color: white;
+  padding: 32px;
+  border-radius: 0.75rem;
+  //box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  box-sizing: border-box;
+}
+
