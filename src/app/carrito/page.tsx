@@ -1,15 +1,16 @@
-import Link from "next/link";
+import type { Metadata } from "next";
+import CartPage from "@/components/Cart/CartPage";
+
+export const metadata: Metadata = {
+  title: "Carrito | FF Crespo",
+  description:
+    "Revisá los productos de tu carrito y solicitá presupuesto por email o WhatsApp.",
+};
 
 export default function CarritoPage() {
   return (
     <main>
-      <h1>Carrito</h1>
-      <p>Aquí se mostrarán los productos agregados al carrito.</p>
-
-      <nav>
-        <Link href="/">Seguir comprando</Link>
-        <Link href="/productos">Ver productos</Link>
-      </nav>
+      <CartPage />
     </main>
   );
 }
