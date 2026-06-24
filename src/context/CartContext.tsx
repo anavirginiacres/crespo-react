@@ -40,6 +40,7 @@ type CartContextValue = {
   updateQuantity: (lineId: string, quantity: number) => void;
   clearCart: () => void;
   totalItems: number;
+  itemAddedSignal: number;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -88,6 +89,7 @@ function normalizeCartItems(stored: unknown): CartItem[] {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [itemAddedSignal, setItemAddedSignal] = useState(0);
 
   useEffect(() => {
     try {
@@ -121,6 +123,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         options,
       },
     ]);
+    setItemAddedSignal((current) => current + 1);
   }, []);
 
   const removeItem = useCallback((lineId: string) => {
@@ -155,8 +158,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       updateQuantity,
       clearCart,
       totalItems,
+      itemAddedSignal,
     }),
-    [items, addItem, removeItem, updateQuantity, clearCart, totalItems]
+    [items, addItem, removeItem, updateQuantity, clearCart, totalItems, itemAddedSignal]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
