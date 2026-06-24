@@ -118,7 +118,7 @@ export default function SearchBar() {
   function handleSuggestionSelect(suggestion: ProductSuggestion) {
     setQuery(suggestion.name);
     setIsOpen(false);
-    router.push(`/productos/${suggestion.id}`);
+    router.push(`/productos/detalle/${suggestion.id}`);
   }
 
   const term = query.trim();

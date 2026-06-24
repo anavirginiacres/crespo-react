@@ -42,6 +42,7 @@ model Product {
   colors        String?
   delay         String?
   tags          String?
+  new_product   Boolean    @default(false)
   category      Category   @relation(fields: [id_category], references: [id], onDelete: Restrict)
   subcategory   Subcategory @relation(fields: [id_subcategory], references: [id], onDelete: Restrict)
   images        Image[]

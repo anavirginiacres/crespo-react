@@ -47,6 +47,29 @@ export async function getProductSuggestions(
     .slice(0, limit);
 }
 
+export async function getNewProducts(limit = 4) {
+  return prisma.product.findMany({
+    where: { new_product: true },
+    take: limit,
+    orderBy: { id: "desc" },
+    include: {
+      category: true,
+      images: { take: 1 },
+    },
+  });
+}
+
+export async function getProductById(id: number) {
+  return prisma.product.findUnique({
+    where: { id },
+    include: {
+      category: true,
+      subcategory: true,
+      images: true,
+    },
+  });
+}
+
 export async function getProducts(filters: ProductFilters = {}) {
   const products = await prisma.product.findMany({
     where: {

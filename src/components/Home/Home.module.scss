@@ -1,0 +1,722 @@
+@use "../../styles/variables" as *;
+
+.homePage {
+  margin: 0 -32px;
+  width: calc(100% + 64px);
+}
+
+.section {
+  position: relative;
+  padding: $spacing-64 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.sectionBackground {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orbPink,
+.orbBlue,
+.orbYellow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  animation: float 10s ease-in-out infinite;
+}
+
+.orbPink {
+  width: 280px;
+  height: 280px;
+  background: $brand-pink;
+  opacity: 0.14;
+}
+
+.orbBlue {
+  width: 240px;
+  height: 240px;
+  background: $brand-blue;
+  opacity: 0.12;
+  animation-delay: -2s;
+}
+
+.orbYellow {
+  width: 180px;
+  height: 180px;
+  background: $brand-yellow;
+  opacity: 0.1;
+  animation-delay: -4s;
+}
+
+.homePage > .section:nth-child(odd) {
+  .orbPink {
+    top: -80px;
+    right: 6%;
+  }
+
+  .orbBlue {
+    bottom: -50px;
+    left: 4%;
+  }
+
+  .orbYellow {
+    top: 45%;
+    left: 48%;
+  }
+}
+
+.homePage > .section:nth-child(even) {
+  .orbPink {
+    top: 20%;
+    left: -6%;
+    right: auto;
+  }
+
+  .orbBlue {
+    top: -40px;
+    right: 10%;
+    left: auto;
+    bottom: auto;
+  }
+
+  .orbYellow {
+    bottom: -30px;
+    right: 30%;
+    top: auto;
+    left: auto;
+  }
+}
+
+.sectionInner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-32;
+  box-sizing: border-box;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity $transition-3xl,
+    transform $transition-3xl;
+  will-change: opacity, transform;
+}
+
+.revealVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .stepItem {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &::before {
+      transition: none;
+    }
+  }
+}
+
+.sectionDefault {
+  background: $white;
+}
+
+.sectionMuted {
+  background: $brand-light-grey;
+}
+
+.sectionDark {
+  background: linear-gradient(145deg, #0d1117 0%, $brand-black 100%);
+  color: $white;
+}
+
+.sectionGradient {
+  background: linear-gradient(
+    135deg,
+    $brand-blue 0%,
+    #0284c7 45%,
+    $brand-pink 100%
+  );
+  color: $white;
+}
+
+.sectionHeader {
+  margin-bottom: $spacing-32;
+  max-width: 640px;
+}
+
+.sectionHeaderLight {
+  .eyebrow {
+    color: $brand-yellow;
+  }
+
+  .sectionTitle {
+    color: $white;
+  }
+
+  .sectionDescription {
+    color: rgba($white, 0.78);
+  }
+}
+
+.eyebrow {
+  margin: 0 0 $spacing-8;
+  font-family: $font-secondary;
+  font-size: $fs-12;
+  font-weight: $fw-medium;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $brand-blue;
+}
+
+.sectionTitle {
+  margin: 0 0 $spacing-16;
+  font-family: $font-primary;
+  font-size: clamp($fs-24, 4vw, $fs-32);
+  line-height: 1.1;
+  color: $brand-black;
+}
+
+.sectionDescription {
+  margin: 0;
+  font-size: $fs-16;
+  line-height: 1.6;
+  color: $brand-dark-grey;
+}
+
+// ── section link (shared) ──
+.sectionLink {
+  display: inline-flex;
+  margin-top: $spacing-32;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: $brand-blue;
+  color: $white !important;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  text-decoration: none !important;
+  transition: background $transition-md, transform $transition-md;
+
+  &:hover {
+    background: $brand-black;
+    transform: translateY(-2px);
+    text-decoration: none !important;
+  }
+}
+
+// ── Categories ──
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: $spacing-16;
+}
+
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-16;
+  padding: $spacing-32 $spacing-16;
+  background: $white;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-lg;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform $transition-md,
+    border-color $transition-md,
+    box-shadow $transition-md;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: $brand-blue;
+    box-shadow: $box-shadow-md;
+    text-decoration: none;
+
+    .categoryIconWrap {
+      background: rgba($brand-blue, 0.12);
+      color: $brand-blue;
+    }
+  }
+}
+
+.categoryIconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: $brand-light-grey;
+  color: $brand-pink;
+  transition: background $transition-md, color $transition-md;
+}
+
+.categoryName {
+  margin: 0;
+  font-family: $font-primary;
+  font-size: $fs-16;
+  text-align: center;
+  color: $brand-black;
+}
+
+// ── Story ──
+.storyLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-64;
+  align-items: center;
+}
+
+.storyHighlight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-64;
+  background: linear-gradient(135deg, $brand-pink 0%, $brand-blue 100%);
+  border-radius: $border-radius-xl;
+  color: $white;
+  text-align: center;
+}
+
+.storyNumber {
+  font-family: $font-primary;
+  font-size: clamp(4rem, 10vw, 6rem);
+  line-height: 1;
+}
+
+.storyYears {
+  font-family: $font-primary;
+  font-size: $fs-24;
+  letter-spacing: 0.05em;
+}
+
+.storyText {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+
+  header {
+    margin-bottom: $spacing-14;
+  }
+
+  p {
+    margin: 0;
+    font-size: $fs-16;
+    line-height: 1.7;
+  }
+}
+
+// ── How to buy ──
+.stepsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $spacing-32;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.stepItem {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+  padding: $spacing-32;
+  background: rgba($white, 0.06);
+  border: 1px solid rgba($white, 0.1);
+  border-radius: $border-radius-lg;
+  counter-increment: step;
+  transition:
+    transform $transition-lg,
+    border-color $transition-lg,
+    background $transition-lg,
+    box-shadow $transition-lg;
+
+  &::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: $font-primary;
+    font-size: $fs-32;
+    color: $brand-yellow;
+    line-height: 1;
+    transition: transform $transition-lg;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    border-color: rgba($brand-yellow, 0.35);
+    background: rgba($white, 0.09);
+    box-shadow: 0 12px 32px rgba($black, 0.25);
+
+    &::before {
+      transform: scale(1.08);
+    }
+  }
+}
+
+.stepTitle {
+  margin: 0;
+  font-size: $fs-16;
+  font-weight: $fw-bold;
+  color: $white;
+}
+
+.stepText {
+  margin: 0;
+  font-size: $fs-14;
+  line-height: 1.6;
+  color: rgba($white, 0.72);
+}
+
+// ── Payments ──
+.paymentLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-32;
+}
+
+.paymentMethods {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+}
+
+.paymentMethod {
+  display: flex;
+  align-items: center;
+  gap: $spacing-16;
+  padding: $spacing-16;
+  background: $white;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-md;
+}
+
+.paymentIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: $border-radius-sm;
+  background: $brand-light-grey;
+  color: $brand-blue;
+  flex-shrink: 0;
+}
+
+.paymentLabel {
+  margin: 0;
+  font-weight: $fw-bold;
+  font-size: $fs-14;
+  color: $brand-black;
+}
+
+.paymentDetail {
+  margin: 0;
+  font-size: $fs-12;
+  color: $brand-dark-grey;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $spacing-8;
+  margin-top: $spacing-12;
+}
+
+.cardChip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-8;
+  padding: $spacing-8 $spacing-12;
+  background: $brand-light-grey;
+  border-radius: $border-radius-sm;
+}
+
+.cardChipImage {
+  width: auto;
+  height: 16px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.cardChipLabel {
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  color: $brand-black;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.promoPanel {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+}
+
+.promoFlyer {
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-32;
+  border: 2px dashed $brand-grey;
+  border-radius: $border-radius-lg;
+  background: $white;
+  text-align: center;
+  font-size: $fs-14;
+  color: $brand-dark-grey;
+}
+
+.promoTag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba($brand-yellow, 0.25);
+  color: $brand-black;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+}
+
+// ── Contact ──
+.contactLayout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: $spacing-32;
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+}
+
+.contactCard {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+  padding: $spacing-16;
+  background: $brand-light-grey;
+  border-radius: $border-radius-md;
+  border-left: 4px solid $brand-blue;
+  text-decoration: none;
+  color: inherit;
+  transition: background $transition-md;
+
+  &:hover {
+    background: $brand-grey;
+    text-decoration: none;
+  }
+}
+
+.contactCardPink {
+  border-left-color: $brand-pink;
+}
+
+.contactCardYellow {
+  border-left-color: $brand-yellow;
+}
+
+.contactLabel {
+  margin: 0;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $brand-dark-grey;
+}
+
+.contactValue {
+  margin: 0;
+  font-size: $fs-16;
+  font-weight: $fw-medium;
+  color: $brand-black;
+}
+
+.mapWrap {
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  border: 1px solid $brand-grey;
+  min-height: 320px;
+}
+
+.mapFrame {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: 0;
+  display: block;
+}
+
+// ── CTA Banner ──
+.ctaBanner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-32;
+  padding: $spacing-64;
+  border-radius: $border-radius-xl;
+}
+
+.ctaTitle {
+  margin: 0 0 $spacing-8;
+  font-family: $font-primary;
+  font-size: clamp($fs-24, 4vw, $fs-48);
+  line-height: 1.05;
+  color: $white;
+}
+
+.ctaText {
+  margin: 0;
+  max-width: 480px;
+  font-size: $fs-16;
+  line-height: 1.6;
+  color: rgba($white, 0.88);
+}
+
+.ctaButton {
+  display: inline-flex;
+  padding: 16px 32px;
+  border-radius: 999px;
+  background: $white;
+  color: $brand-blue !important;
+  font-size: $fs-16;
+  font-weight: $fw-bold;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: transform $transition-md, box-shadow $transition-md;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $box-shadow-xl;
+    text-decoration: none !important;
+  }
+}
+
+// ── Clients carousel ──
+.clientsTrack {
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+
+.clientsSlider {
+  display: flex;
+  gap: $spacing-64;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+.clientLogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 72px;
+  flex-shrink: 0;
+  padding: $spacing-16;
+  background: $white;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-md;
+  font-size: $fs-12;
+  font-weight: $fw-medium;
+  color: $brand-dark-grey;
+}
+
+.clientLogoImage {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbPink,
+  .orbBlue,
+  .orbYellow {
+    animation: none;
+  }
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+  .section {
+    padding: $spacing-32 0;
+  }
+
+  .sectionInner {
+    padding: 0 $spacing-16;
+  }
+
+  .storyLayout,
+  .paymentLayout,
+  .contactLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .storyHighlight {
+    padding: $spacing-32;
+  }
+
+  .ctaBanner {
+    padding: $spacing-32;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cardGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

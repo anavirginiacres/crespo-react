@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.scss";
 import Nav from "@/components/Navigation/Nav";
+import Footer from "@/components/Footer/Footer";
 import { CartProvider } from "@/context/CartContext";
 import logoIcon from "@/styles/images/logo-redondo.png";
 
@@ -27,17 +28,7 @@ export default function RootLayout({
           {children}
         </CartProvider>
 
-        <footer
-          style={{
-            marginTop: "2rem",
-            padding: "1rem 2rem",
-            textAlign: "center",
-            fontSize: "0.85rem",
-            color: "#6b7280",
-          }}
-        >
-          © {new Date().getFullYear()} FF CRESPO. Todos los derechos reservados.
-        </footer>
+        <Footer />
       </body>
     </html>
   );

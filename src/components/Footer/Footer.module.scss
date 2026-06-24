@@ -1,0 +1,234 @@
+@use "../../styles/variables" as *;
+
+.footer {
+  position: relative;
+  background: linear-gradient(165deg, #141414 0%, $brand-black 45%, #1e1a24 100%);
+  color: rgba($white, 0.88);
+  overflow: hidden;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50px);
+}
+
+.footerGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 20%, rgba($brand-pink, 0.18), transparent 42%),
+    radial-gradient(circle at 88% 10%, rgba($brand-blue, 0.16), transparent 38%),
+    radial-gradient(circle at 70% 90%, rgba($brand-yellow, 0.1), transparent 40%);
+}
+
+.footerInner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-64 $spacing-32 $spacing-32;
+  box-sizing: border-box;
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1.2fr 1fr;
+  gap: $spacing-32;
+  padding-bottom: $spacing-32;
+  border-bottom: 1px solid rgba($white, 0.1);
+}
+
+.brandColumn {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+}
+
+.logoLink {
+  display: inline-flex;
+  width: fit-content;
+  transition: opacity $transition-md;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.logo {
+  width: auto;
+  height: 52px;
+}
+
+.tagline {
+  margin: 0;
+  max-width: 280px;
+  font-size: $fs-14;
+  line-height: 1.6;
+  color: rgba($white, 0.68);
+}
+
+.socialList {
+  display: flex;
+  gap: $spacing-12;
+  margin-top: $spacing-8;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($white, 0.14);
+  background: rgba($white, 0.06);
+  color: $white;
+  transition:
+    transform $transition-md,
+    background $transition-md,
+    border-color $transition-md,
+    color $transition-md;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba($brand-pink, 0.2);
+    border-color: rgba($brand-pink, 0.45);
+    color: $white;
+  }
+
+  &:nth-child(2):hover {
+    background: rgba($brand-blue, 0.22);
+    border-color: rgba($brand-blue, 0.45);
+  }
+
+  &:nth-child(3):hover {
+    background: rgba($brand-yellow, 0.18);
+    border-color: rgba($brand-yellow, 0.45);
+    color: $brand-black;
+  }
+}
+
+.columnTitle {
+  margin: 0 0 $spacing-16;
+  font-family: $font-primary;
+  font-size: $fs-14;
+  font-weight: $fw-regular;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $brand-yellow;
+}
+
+.linkList,
+.contactList,
+.hoursList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.linkList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+}
+
+.footerLink {
+  font-size: $fs-14;
+  line-height: 1.5;
+  color: rgba($white, 0.78);
+  text-decoration: none;
+  transition: color $transition-md;
+
+  &:hover {
+    color: $white;
+  }
+}
+
+.address {
+  font-size: $fs-14;
+  line-height: 1.6;
+  color: rgba($white, 0.68);
+}
+
+.hoursList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+    font-size: $fs-14;
+    line-height: 1.5;
+
+    span:first-child {
+      font-weight: $fw-bold;
+      color: $white;
+    }
+
+    span:last-child {
+      color: rgba($white, 0.68);
+    }
+  }
+}
+
+.hoursNote {
+  margin: $spacing-16 0 0;
+  font-size: $fs-12;
+  line-height: 1.6;
+  color: rgba($white, 0.52);
+}
+
+.footerBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-16;
+  padding-top: $spacing-24;
+  flex-wrap: wrap;
+}
+
+.copyright,
+.credit {
+  margin: 0;
+  font-size: $fs-12;
+  color: rgba($white, 0.52);
+}
+
+@media (max-width: $breakpoint-lg) {
+  .footerGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .brandColumn {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .footerInner {
+    padding: $spacing-32 $spacing-16 $spacing-24;
+  }
+
+  .footerGrid {
+    grid-template-columns: 1fr;
+    gap: $spacing-24;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .socialLink:hover {
+    transform: none;
+  }
+}
