@@ -40,8 +40,8 @@ export default function Hero() {
             <Link href="/productos" className={styles.primaryCta}>
               Explorar catálogo
             </Link>
-            <Link href="/posteos" className={styles.secondaryCta}>
-              Ver nuestro trabajo
+            <Link href="/#contacto" className={styles.secondaryCta}>
+              Contáctanos
             </Link>
           </div>
         </div>

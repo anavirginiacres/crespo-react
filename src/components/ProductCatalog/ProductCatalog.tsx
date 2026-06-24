@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { CategoryNav } from "@/lib/categories";
 import type { CatalogFiltersState, CatalogProduct } from "@/lib/catalogUtils";
 import {
@@ -8,6 +8,7 @@ import {
   filterAndSortProducts,
   type SortOrder,
 } from "@/lib/catalogUtils";
+import { useCart } from "@/context/CartContext";
 import AddToCartModal from "./AddToCartModal";
 import ProductCard from "./ProductCard";
 import styles from "./ProductCatalog.module.scss";
@@ -41,11 +42,28 @@ export default function ProductCatalog({
   categories,
   initialFilters,
 }: ProductCatalogProps) {
+  const { addItem } = useCart();
   const [filters, setFilters] = useState<CatalogFiltersState>(() =>
     buildFiltersFromInitial(initialFilters)
   );
   const [modalProduct, setModalProduct] = useState<CatalogProduct | null>(null);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
+  const handleAddToCart = useCallback((product: CatalogProduct) => {
+    setModalProduct(product);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setModalProduct(null);
+  }, []);
+
+  const handleConfirmAddToCart = useCallback(
+    (payload: Parameters<typeof addItem>[0]) => {
+      addItem(payload);
+      setModalProduct(null);
+    },
+    [addItem]
+  );
 
   useEffect(() => {
     setFilters(buildFiltersFromInitial(initialFilters));
@@ -352,7 +370,7 @@ export default function ProductCatalog({
                 <ProductCard
                   key={product.id}
                   product={product}
-                  onAddToCart={setModalProduct}
+                  onAddToCart={handleAddToCart}
                 />
               ))}
             </div>
@@ -363,7 +381,8 @@ export default function ProductCatalog({
       <AddToCartModal
         product={modalProduct}
         isOpen={modalProduct !== null}
-        onClose={() => setModalProduct(null)}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmAddToCart}
       />
     </div>
   );

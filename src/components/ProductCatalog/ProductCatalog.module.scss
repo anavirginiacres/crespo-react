@@ -326,12 +326,9 @@
   border: 1px solid $brand-grey;
   border-radius: $border-radius-lg;
   overflow: hidden;
-  transition:
-    transform $transition-lg,
-    box-shadow $transition-lg;
+  transition: box-shadow $transition-lg;
 
   &:hover {
-    transform: translateY(-4px);
     box-shadow: $box-shadow-lg;
   }
 }
@@ -348,6 +345,10 @@
 }
 
 .cardImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -693,10 +694,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .card:hover {
-    transform: none;
-  }
-
   .primaryButton:hover {
     transform: none;
   }

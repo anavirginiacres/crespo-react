@@ -8,7 +8,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import { buildCartLineId } from "@/lib/catalogUtils";
 
 export type CartItemOptions = {
   color?: string;
@@ -46,6 +45,14 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = "crespo-cart";
 
+function createCartLineId() {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return `line-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
 function normalizeCartItems(stored: unknown): CartItem[] {
   if (!Array.isArray(stored)) return [];
 
@@ -63,13 +70,7 @@ function normalizeCartItems(stored: unknown): CartItem[] {
     if (!record.productId || !record.name) continue;
 
     const options = record.options ?? {};
-    const lineId =
-      record.lineId ??
-      buildCartLineId(record.productId, {
-        color: options.color,
-        materials: options.materials,
-        measures: options.measures,
-      });
+    const lineId = record.lineId ?? createCartLineId();
 
     items.push({
       lineId,
@@ -107,34 +108,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addItem = useCallback((item: AddCartItemInput) => {
     const options = item.options ?? {};
-    const lineId = buildCartLineId(item.productId, options);
+    const lineId = createCartLineId();
 
-    setItems((current) => {
-      const existing = current.find((entry) => entry.lineId === lineId);
-
-      if (existing) {
-        return current.map((entry) =>
-          entry.lineId === lineId
-            ? {
-                ...entry,
-                quantity: entry.quantity + (item.quantity ?? 1),
-              }
-            : entry
-        );
-      }
-
-      return [
-        ...current,
-        {
-          lineId,
-          productId: item.productId,
-          name: item.name,
-          image: item.image ?? null,
-          quantity: item.quantity ?? 1,
-          options,
-        },
-      ];
-    });
+    setItems((current) => [
+      ...current,
+      {
+        lineId,
+        productId: item.productId,
+        name: item.name,
+        image: item.image ?? null,
+        quantity: item.quantity ?? 1,
+        options,
+      },
+    ]);
   }, []);
 
   const removeItem = useCallback((lineId: string) => {

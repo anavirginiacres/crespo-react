@@ -1,10 +1,55 @@
-import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import ProductDetail from "@/components/ProductDetail/ProductDetail";
 import { getProductById } from "@/lib/products";
+import type { ProductDetailData } from "@/lib/productOptions";
 
 interface ProductoDetallePageProps {
   params: {
     id: string;
+  };
+}
+
+function mapProductDetail(
+  product: NonNullable<Awaited<ReturnType<typeof getProductById>>>
+): ProductDetailData {
+  return {
+    id: product.id,
+    name: product.name,
+    caption: product.caption,
+    colors: product.colors,
+    materials: product.materials,
+    measures: product.measures,
+    quantity: product.quantity,
+    details: product.details,
+    caution: product.caution,
+    delay: product.delay,
+    tags: product.tags,
+    category: { name: product.category.name },
+    subcategory: { name: product.subcategory.name },
+    images: product.images.map((image) => ({
+      id: image.id,
+      src: image.src,
+    })),
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: ProductoDetallePageProps): Promise<Metadata> {
+  const productId = Number(params.id);
+  if (!Number.isInteger(productId) || productId <= 0) {
+    return { title: "Producto no encontrado" };
+  }
+
+  const product = await getProductById(productId);
+  if (!product) {
+    return { title: "Producto no encontrado" };
+  }
+
+  return {
+    title: `${product.name} | FF Crespo`,
+    description: product.caption ?? `Detalle de ${product.name}`,
   };
 }
 
@@ -19,42 +64,7 @@ export default async function ProductoDetallePage({
 
   return (
     <main>
-      <p>
-        <small>{product.category.name}</small>
-      </p>
-      <h1>{product.name}</h1>
-      {product.caption && <p>{product.caption}</p>}
-
-      {product.materials && (
-        <p>
-          <strong>Materiales:</strong> {product.materials}
-        </p>
-      )}
-      {product.measures && (
-        <p>
-          <strong>Medidas:</strong> {product.measures}
-        </p>
-      )}
-      {product.colors && (
-        <p>
-          <strong>Colores:</strong> {product.colors}
-        </p>
-      )}
-      {product.details && (
-        <p>
-          <strong>Detalles:</strong> {product.details}
-        </p>
-      )}
-      {product.tags && (
-        <p>
-          <strong>Tags:</strong> {product.tags}
-        </p>
-      )}
-
-      <nav>
-        <Link href="/productos">Volver al catálogo</Link>
-        <Link href="/">Volver al inicio</Link>
-      </nav>
+      <ProductDetail product={mapProductDetail(product)} />
     </main>
   );
 }

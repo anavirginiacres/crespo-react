@@ -12,7 +12,7 @@ type CartDrawerProps = {
 };
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
-  const { items, removeItem, updateQuantity, totalItems } = useCart();
+  const { items, removeItem, updateQuantity, clearCart, totalItems } = useCart();
 
   return (
     <>
@@ -46,7 +46,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               alt="FF Crespo"
               className={styles.cartEmptyLogo}
             />
-            <p className={styles.cartEmptyText}>Tu carrito aún está vacío</p>
+            <p className={styles.cartEmptyText}>Tu carrito está vacío</p>
             <p className={styles.cartEmptyHint}>
               Busca un producto en la barra o visita nuestro{" "}
               <Link href="/productos" onClick={onClose}>
@@ -116,6 +116,13 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               <p className={styles.cartTotal}>
                 {totalItems} {totalItems === 1 ? "producto" : "productos"}
               </p>
+              <button
+                type="button"
+                className={styles.cartClearButton}
+                onClick={clearCart}
+              >
+                Vaciar carrito
+              </button>
               <Link
                 href="/carrito"
                 className={styles.cartViewLink}
