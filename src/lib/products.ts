@@ -91,3 +91,14 @@ export async function getProducts(filters: ProductFilters = {}) {
     matchesSearch(product.name, product.tags, term)
   );
 }
+
+export async function getCatalogProducts() {
+  return prisma.product.findMany({
+    include: {
+      category: true,
+      subcategory: true,
+      images: { take: 1 },
+    },
+    orderBy: { name: "asc" },
+  });
+}

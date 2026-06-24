@@ -9,7 +9,6 @@ import type { CategoryNav } from "@/lib/categories";
 import { useCart } from "@/context/CartContext";
 import SearchBar from "./SearchBar";
 import SubNavigation from "./SubNavigation";
-import ContactModal from "./ContactModal";
 import CartDrawer from "./CartDrawer";
 import styles from "./Nav.module.scss";
 
@@ -21,9 +20,16 @@ export default function NavBar({ categories }: NavBarProps) {
   const pathname = usePathname();
   const { totalItems } = useCart();
   const headerRef = useRef<HTMLElement>(null);
-  const [isContactOpen, setIsContactOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  function handleContactClick(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (pathname !== "/") return;
+
+    event.preventDefault();
+    document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
+    window.history.pushState(null, "", "/#contacto");
+  }
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 12);
@@ -52,18 +58,16 @@ export default function NavBar({ categories }: NavBarProps) {
   }, []);
 
   useEffect(() => {
-    setIsContactOpen(false);
     setIsCartOpen(false);
   }, [pathname]);
 
   useEffect(() => {
-    document.body.style.overflow =
-      isContactOpen || isCartOpen ? "hidden" : "";
+    document.body.style.overflow = isCartOpen ? "hidden" : "";
 
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isContactOpen, isCartOpen]);
+  }, [isCartOpen]);
 
   return (
     <>
@@ -88,13 +92,13 @@ export default function NavBar({ categories }: NavBarProps) {
             </Suspense>
 
             <div className={styles.navActions}>
-              <button
-                type="button"
+              <Link
+                href="/#contacto"
                 className={styles.navActionButton}
-                onClick={() => setIsContactOpen(true)}
+                onClick={handleContactClick}
               >
                 Contacto
-              </button>
+              </Link>
 
               <Link
                 href="/posteos"
@@ -137,10 +141,6 @@ export default function NavBar({ categories }: NavBarProps) {
         <SubNavigation categories={categories} />
       </header>
 
-      <ContactModal
-        isOpen={isContactOpen}
-        onClose={() => setIsContactOpen(false)}
-      />
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );

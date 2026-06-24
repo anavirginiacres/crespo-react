@@ -58,9 +58,22 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           <div className={styles.cartContent}>
             <ul className={styles.cartList}>
               {items.map((item) => (
-                <li key={item.productId} className={styles.cartItem}>
+                <li key={item.lineId} className={styles.cartItem}>
                   <div className={styles.cartItemInfo}>
                     <span className={styles.cartItemName}>{item.name}</span>
+                    {(item.options.color ||
+                      item.options.materials ||
+                      item.options.measures) && (
+                      <span className={styles.cartItemMeta}>
+                        {[
+                          item.options.color,
+                          item.options.materials,
+                          item.options.measures,
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </span>
+                    )}
                     <span className={styles.cartItemQuantity}>
                       Cantidad: {item.quantity}
                     </span>
@@ -70,7 +83,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       type="button"
                       className={styles.cartQtyButton}
                       onClick={() =>
-                        updateQuantity(item.productId, item.quantity - 1)
+                        updateQuantity(item.lineId, item.quantity - 1)
                       }
                       aria-label={`Disminuir cantidad de ${item.name}`}
                     >
@@ -80,7 +93,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                       type="button"
                       className={styles.cartQtyButton}
                       onClick={() =>
-                        updateQuantity(item.productId, item.quantity + 1)
+                        updateQuantity(item.lineId, item.quantity + 1)
                       }
                       aria-label={`Aumentar cantidad de ${item.name}`}
                     >
@@ -89,7 +102,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                     <button
                       type="button"
                       className={styles.cartRemoveButton}
-                      onClick={() => removeItem(item.productId)}
+                      onClick={() => removeItem(item.lineId)}
                       aria-label={`Eliminar ${item.name}`}
                     >
                       Eliminar
