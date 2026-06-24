@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { CatalogProduct } from "@/lib/catalogUtils";
@@ -27,7 +27,7 @@ function CardImageFallback() {
   );
 }
 
-export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export default memo(function ProductCard({ product, onAddToCart }: ProductCardProps) {
   const imageSrc = product.images[0]?.src;
   const [imageError, setImageError] = useState(false);
 
@@ -47,12 +47,13 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           {showFallback ? (
             <CardImageFallback />
           ) : (
-            <Image
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
               src={imageSrc}
               alt={product.name}
-              fill
               className={styles.cardImage}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              loading="lazy"
+              decoding="async"
               onError={() => setImageError(true)}
             />
           )}
@@ -89,4 +90,4 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
       </div>
     </article>
   );
-}
+});

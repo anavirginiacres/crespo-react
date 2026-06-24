@@ -1,15 +1,29 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import type { CatalogProduct } from "@/lib/catalogUtils";
 import { parseOptionList } from "@/lib/catalogUtils";
-import { useCart } from "@/context/CartContext";
 import styles from "./ProductCatalog.module.scss";
+
+type CartConfirmPayload = {
+  productId: number;
+  name: string;
+  image?: string | null;
+  quantity: number;
+  options: {
+    color?: string;
+    materials?: string;
+    measures?: string;
+    details?: string;
+  };
+};
 
 type AddToCartModalProps = {
   product: CatalogProduct | null;
   isOpen: boolean;
   onClose: () => void;
+  onConfirm: (payload: CartConfirmPayload) => void;
 };
 
 type OptionGroup = {
@@ -22,8 +36,8 @@ export default function AddToCartModal({
   product,
   isOpen,
   onClose,
+  onConfirm,
 }: AddToCartModalProps) {
-  const { addItem } = useCart();
   const [selections, setSelections] = useState<
     Partial<Record<OptionGroup["key"], string>>
   >({});
@@ -59,12 +73,19 @@ export default function AddToCartModal({
   useEffect(() => {
     if (!isOpen) return;
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
 
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen || !product) return null;
@@ -79,7 +100,7 @@ export default function AddToCartModal({
       }
     }
 
-    addItem({
+    onConfirm({
       productId: product.id,
       name: product.name,
       image: imageSrc ?? null,
@@ -91,11 +112,9 @@ export default function AddToCartModal({
         details: product.details ?? undefined,
       },
     });
-
-    onClose();
   };
 
-  return (
+  return createPortal(
     <div className={styles.modalOverlay} onClick={onClose}>
       <div
         className={styles.modal}
@@ -195,6 +214,7 @@ export default function AddToCartModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

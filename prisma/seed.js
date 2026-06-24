@@ -49,24 +49,46 @@ async function main() {
   });
   const prod2 = await prisma.product.upsert({
     where: { id: 2 },
-    update: { new_product: false },
+    update: {
+      new_product: false,
+      colors: "Blanco, Negro, Terracota",
+      materials: "Cerámica, Esmaltada",
+      measures: "15 cm, 20 cm",
+    },
     create: {
       id_category: cat2.id,
       id_subcategory: sub3.id,
       name: "Jarrón cerámica",
       caption: "Jarrón hecho a mano",
-      materials: "Cerámica",
+      materials: "Cerámica, Esmaltada",
+      measures: "15 cm, 20 cm",
+      colors: "Blanco, Negro, Terracota",
       details: "Hecho a mano. Colores surtidos.",
       tags: "deco, cerámica",
       new_product: false,
     },
   });
 
-  // Imagen de ejemplo para el primer producto
+  // Imágenes de ejemplo (public/img/productos/)
   await prisma.image.upsert({
     where: { id: 1 },
-    update: {},
-    create: { id_product: prod1.id, src: "/img/bolso-1.jpg" },
+    update: { src: "/img/productos/bolso-1.jpg" },
+    create: { id_product: prod1.id, src: "/img/productos/bolso-1.jpg" },
+  });
+  await prisma.image.upsert({
+    where: { id: 2 },
+    update: { src: "/img/productos/jarron-1.jpg" },
+    create: { id_product: prod2.id, src: "/img/productos/jarron-1.jpg" },
+  });
+  await prisma.image.upsert({
+    where: { id: 3 },
+    update: { src: "/img/productos/jarron-2.jpg" },
+    create: { id_product: prod2.id, src: "/img/productos/jarron-2.jpg" },
+  });
+  await prisma.image.upsert({
+    where: { id: 4 },
+    update: { src: "/img/productos/jarron-3.jpg" },
+    create: { id_product: prod2.id, src: "/img/productos/jarron-3.jpg" },
   });
 
   console.log("Seed completado: categorías, subcategorías, productos e imagen de ejemplo.");

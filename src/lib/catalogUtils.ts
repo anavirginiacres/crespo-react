@@ -121,15 +121,3 @@ export function buildFilterPills(
 
   return pills;
 }
-
-export function buildCartLineId(
-  productId: number,
-  options: { color?: string; materials?: string; measures?: string }
-) {
-  return [
-    productId,
-    options.color ?? "",
-    options.materials ?? "",
-    options.measures ?? "",
-  ].join("::");
-}

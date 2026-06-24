@@ -5,7 +5,6 @@ import styles from "./Footer.module.scss";
 
 const quickLinks = [
   { label: "Catálogo", href: "/productos" },
-  { label: "Posteos", href: "/posteos" },
   { label: "Novedades", href: "/#novedades" },
   { label: "Cómo comprar", href: "/#como-comprar" },
   { label: "Medios de pago", href: "/#pagos" },

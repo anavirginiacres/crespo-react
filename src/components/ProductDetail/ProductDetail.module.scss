@@ -1,0 +1,377 @@
+@use "../../styles/variables" as *;
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-32;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $spacing-8;
+  font-size: $fs-12;
+  color: $brand-dark-grey;
+
+  a {
+    color: $brand-blue;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  span:last-child {
+    color: $brand-black;
+    font-weight: $fw-medium;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $brand-blue;
+}
+
+.title {
+  margin: 0;
+  font-family: $font-primary;
+  font-size: clamp(2rem, 4vw, $fs-48);
+  line-height: 1.05;
+  color: $brand-black;
+}
+
+.caption {
+  margin: 0;
+  font-size: $fs-16;
+  line-height: 1.6;
+  color: $brand-dark-grey;
+}
+
+.mainLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: $spacing-32;
+  align-items: start;
+}
+
+.mediaColumn {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+}
+
+.mainImageWrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-lg;
+  background: $brand-light-grey;
+}
+
+.mainImage,
+.galleryImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+}
+
+.imageFallbackLogo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.thumbnailButton .imageFallbackLogo {
+  width: 24px;
+  height: 24px;
+}
+
+.mainImageSlide {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.mainImageSlideActive {
+  z-index: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.thumbnailRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-12;
+}
+
+.thumbnailButton {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  background: $brand-light-grey;
+  cursor: pointer;
+  transition: border-color $transition-md;
+
+  &:hover {
+    border-color: rgba($brand-blue, 0.4);
+  }
+
+  .imageFallback {
+    min-height: 0;
+  }
+}
+
+.thumbnailButtonActive {
+  border-color: $brand-blue;
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.infoColumn {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-24;
+  padding: $spacing-24;
+  background: $brand-light-grey;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-lg;
+}
+
+.price {
+  margin: 0;
+  font-size: $fs-24;
+  font-weight: $fw-bold;
+  color: $brand-black;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+  margin: 0;
+}
+
+.infoItem {
+  display: grid;
+  gap: $spacing-4;
+
+  dt {
+    margin: 0;
+    font-size: $fs-12;
+    font-weight: $fw-bold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $brand-dark-grey;
+  }
+
+  dd {
+    margin: 0;
+    font-size: $fs-14;
+    line-height: 1.6;
+    color: $brand-black;
+  }
+}
+
+.optionGroup {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.optionLegend {
+  margin-bottom: $spacing-12;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $brand-black;
+}
+
+.optionList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-8;
+}
+
+.optionPill {
+  padding: $spacing-8 $spacing-16;
+  border: 1px solid $brand-grey;
+  border-radius: 999px;
+  background: $white;
+  font: inherit;
+  font-size: $fs-14;
+  color: $brand-black;
+  cursor: pointer;
+  transition:
+    border-color $transition-md,
+    background $transition-md,
+    color $transition-md;
+
+  &:hover {
+    border-color: $brand-blue;
+  }
+}
+
+.optionPillActive {
+  border-color: $brand-blue;
+  background: rgba($brand-blue, 0.1);
+  color: $brand-blue;
+  font-weight: $fw-bold;
+}
+
+.quantityRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-16;
+}
+
+.quantityControls {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-12;
+}
+
+.quantityButton {
+  width: 36px;
+  height: 36px;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-sm;
+  background: $white;
+  font-size: $fs-16;
+  cursor: pointer;
+}
+
+.quantityValue {
+  min-width: 24px;
+  text-align: center;
+  font-weight: $fw-bold;
+}
+
+.error {
+  margin: 0;
+  font-size: $fs-14;
+  color: $brand-pink;
+}
+
+.success {
+  margin: 0;
+  font-size: $fs-14;
+  font-weight: $fw-medium;
+  color: $brand-blue;
+}
+
+.addButton {
+  width: 100%;
+  min-height: 48px;
+  border: 0;
+  border-radius: $border-radius-md;
+  background: $brand-pink;
+  color: $white;
+  font: inherit;
+  font-size: $fs-16;
+  font-weight: $fw-bold;
+  cursor: pointer;
+  transition: background $transition-md;
+
+  &:hover {
+    background: #c40067;
+  }
+}
+
+.gallerySection {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+  padding-top: $spacing-16;
+  border-top: 1px solid $brand-grey;
+}
+
+.galleryTitle {
+  margin: 0;
+  font-family: $font-primary;
+  font-size: $fs-24;
+  color: $brand-black;
+}
+
+.galleryDescription {
+  margin: 0;
+  font-size: $fs-14;
+  color: $brand-dark-grey;
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: $spacing-16;
+}
+
+.galleryItem {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  background: $brand-light-grey;
+  cursor: pointer;
+  transition: border-color $transition-md, transform $transition-md;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba($brand-blue, 0.35);
+  }
+}
+
+.galleryItemActive {
+  border-color: $brand-blue;
+}
+
+@media (max-width: $breakpoint-sm) {
+  .mainLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .infoColumn {
+    padding: $spacing-16;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galleryItem:hover {
+    transform: none;
+  }
+}

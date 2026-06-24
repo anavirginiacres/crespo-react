@@ -236,6 +236,7 @@
   font-weight: $fw-medium;
 }
 
+.contactButton,
 .cartButton {
   position: relative;
   display: flex;
@@ -519,6 +520,24 @@
 .cartTotal {
   margin: 0 0 12px;
   font-weight: $fw-medium;
+}
+
+.cartClearButton {
+  display: block;
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: $brand-pink;
+  font-size: $fs-14;
+  font-weight: $fw-medium;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .cartViewLink {
