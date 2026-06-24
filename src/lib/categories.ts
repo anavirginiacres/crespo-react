@@ -47,7 +47,10 @@ export async function getCategories(): Promise<CategoryNav[]> {
 
 export async function getCategoryBySlug(slug: string) {
   const categories = await fetchCategoriesRaw();
-  const category = categories.find((item) => slugify(item.name) === slug);
+  const normalizedSlug = slugify(slug);
+  const category = categories.find(
+    (item) => slugify(item.name) === normalizedSlug
+  );
   if (!category) return null;
 
   return category;
@@ -60,8 +63,9 @@ export async function getSubcategoryBySlug(
   const category = await getCategoryBySlug(categorySlug);
   if (!category) return null;
 
+  const normalizedSubSlug = slugify(subcategorySlug);
   const subcategory = category.subcategories.find(
-    (item) => slugify(item.name) === subcategorySlug
+    (item) => slugify(item.name) === normalizedSubSlug
   );
   if (!subcategory) return null;
 

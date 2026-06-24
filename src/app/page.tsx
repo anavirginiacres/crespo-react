@@ -8,6 +8,7 @@ import PaymentMethods from "@/components/Home/PaymentMethods";
 import ContactSection from "@/components/Home/ContactSection";
 import CatalogCta from "@/components/Home/CatalogCta";
 import ClientsCarousel from "@/components/Home/ClientsCarousel";
+import ScrollToHash from "@/components/Home/ScrollToHash";
 import styles from "@/components/Home/Home.module.scss";
 
 export default async function HomePage() {
@@ -15,6 +16,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <ScrollToHash />
       <Hero />
       <div className={styles.homePage}>
         <NewProducts />
