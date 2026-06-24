@@ -72,7 +72,7 @@ export default async function ProductosPage({ searchParams }: ProductosPageProps
         <ul>
           {products.map((product) => (
             <li key={product.id}>
-              <Link href={`/productos/${product.id}`}>{product.name}</Link>
+              <Link href={`/productos/detalle/${product.id}`}>{product.name}</Link>
               {product.caption && <span> — {product.caption}</span>}
               {product.tags && (
                 <span>

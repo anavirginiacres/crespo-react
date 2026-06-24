@@ -1,37 +1,19 @@
-"use client";
-
+import { getClientLogos } from "@/lib/clientLogos";
 import { HomeSection, SectionHeader } from "./HomeSection";
-import styles from "./Home.module.scss";
-
-const placeholderClients = [
-  "Cliente 1",
-  "Cliente 2",
-  "Cliente 3",
-  "Cliente 4",
-  "Cliente 5",
-  "Cliente 6",
-];
+import ClientsMarquee from "./ClientsMarquee";
 
 export default function ClientsCarousel() {
-  const items = [...placeholderClients, ...placeholderClients];
+  const items = getClientLogos();
 
   return (
     <HomeSection id="clientes" variant="muted">
       <SectionHeader
-        eyebrow="Confianza"
+        eyebrow="Respaldan nuestra trayectoria"
         title="Clientes que nos eligen"
-        description="Empresas e instituciones que confían en nosotros. Pronto agregaremos sus logos acá."
+        description="Acompañamos el crecimiento de empresas e instituciones que eligen la calidad de nuestros trabajos."
       />
 
-      <div className={styles.clientsTrack}>
-        <div className={styles.clientsSlider}>
-          {items.map((client, index) => (
-            <div key={`${client}-${index}`} className={styles.clientLogo}>
-              {client}
-            </div>
-          ))}
-        </div>
-      </div>
+      <ClientsMarquee items={items} />
     </HomeSection>
   );
 }

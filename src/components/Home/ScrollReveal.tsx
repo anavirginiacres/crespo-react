@@ -7,14 +7,16 @@ type ScrollRevealProps = {
   children: ReactNode;
   className?: string;
   delay?: number;
+  as?: "div" | "li";
 };
 
 export default function ScrollReveal({
   children,
   className = "",
   delay = 0,
+  as: Tag = "div",
 }: ScrollRevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -48,12 +50,12 @@ export default function ScrollReveal({
   }, []);
 
   return (
-    <div
+    <Tag
       ref={ref}
       className={`${styles.reveal}${isVisible ? ` ${styles.revealVisible}` : ""} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
-    </div>
+    </Tag>
   );
 }

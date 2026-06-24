@@ -120,6 +120,18 @@
     transform: none;
     transition: none;
   }
+
+  .stepItem {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    &::before {
+      transition: none;
+    }
+  }
 }
 
 .sectionDefault {
@@ -189,92 +201,7 @@
   color: $brand-dark-grey;
 }
 
-// ── New products ──
-.productGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: $spacing-32;
-}
-
-.productCard {
-  display: flex;
-  flex-direction: column;
-  background: $white;
-  border: 1px solid $brand-grey;
-  border-radius: $border-radius-lg;
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  transition:
-    transform $transition-md,
-    box-shadow $transition-md;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: $box-shadow-lg;
-    text-decoration: none;
-  }
-}
-
-.productImageWrap {
-  aspect-ratio: 4 / 3;
-  background: linear-gradient(135deg, $brand-grey 0%, $brand-light-grey 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.productImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.productPlaceholder {
-  font-family: $font-primary;
-  font-size: $fs-32;
-  color: $brand-dark-grey;
-  opacity: 0.4;
-}
-
-.productBody {
-  padding: $spacing-16;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-8;
-}
-
-.productBadge {
-  align-self: flex-start;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba($brand-pink, 0.1);
-  color: $brand-pink;
-  font-size: $fs-12;
-  font-weight: $fw-bold;
-}
-
-.productName {
-  margin: 0;
-  font-size: $fs-16;
-  font-weight: $fw-bold;
-  color: $brand-black;
-}
-
-.productCaption {
-  margin: 0;
-  font-size: $fs-14;
-  color: $brand-dark-grey;
-}
-
-.productCategory {
-  margin: 0;
-  font-size: $fs-12;
-  color: $brand-blue;
-  font-weight: $fw-medium;
-}
-
+// ── section link (shared) ──
 .sectionLink {
   display: inline-flex;
   margin-top: $spacing-32;
@@ -387,11 +314,14 @@
   flex-direction: column;
   gap: $spacing-16;
 
+  header {
+    margin-bottom: $spacing-14;
+  }
+
   p {
     margin: 0;
     font-size: $fs-16;
     line-height: 1.7;
-    color: $brand-black;
   }
 }
 
@@ -416,6 +346,11 @@
   border: 1px solid rgba($white, 0.1);
   border-radius: $border-radius-lg;
   counter-increment: step;
+  transition:
+    transform $transition-lg,
+    border-color $transition-lg,
+    background $transition-lg,
+    box-shadow $transition-lg;
 
   &::before {
     content: counter(step, decimal-leading-zero);
@@ -423,6 +358,18 @@
     font-size: $fs-32;
     color: $brand-yellow;
     line-height: 1;
+    transition: transform $transition-lg;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    border-color: rgba($brand-yellow, 0.35);
+    background: rgba($white, 0.09);
+    box-shadow: 0 12px 32px rgba($black, 0.25);
+
+    &::before {
+      transform: scale(1.08);
+    }
   }
 }
 
@@ -490,21 +437,35 @@
 
 .cardGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: $spacing-8;
-  margin-top: $spacing-8;
+  margin-top: $spacing-12;
 }
 
 .cardChip {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: $spacing-8;
+  gap: $spacing-8;
+  padding: $spacing-8 $spacing-12;
   background: $brand-light-grey;
   border-radius: $border-radius-sm;
+}
+
+.cardChipImage {
+  width: auto;
+  height: 16px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.cardChipLabel {
   font-size: $fs-12;
   font-weight: $fw-bold;
   color: $brand-black;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .promoPanel {
@@ -571,6 +532,10 @@
 
 .contactCardPink {
   border-left-color: $brand-pink;
+}
+
+.contactCardYellow {
+  border-left-color: $brand-yellow;
 }
 
 .contactLabel {
@@ -687,6 +652,14 @@
   font-size: $fs-12;
   font-weight: $fw-medium;
   color: $brand-dark-grey;
+}
+
+.clientLogoImage {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 @keyframes marquee {

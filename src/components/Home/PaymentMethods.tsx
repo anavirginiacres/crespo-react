@@ -1,15 +1,34 @@
+import Image, { StaticImageData } from "next/image";
 import { HomeSection, SectionHeader } from "./HomeSection";
 import styles from "./Home.module.scss";
+import amexImg from "@/styles/images/cards/amex.svg";
+import mastercardImg from "@/styles/images/cards/mastercard.svg";
+import naranjaImg from "@/styles/images/cards/naranjax.png";
+import sucreditoImg from "@/styles/images/cards/sucredito.svg";
+import visaImg from "@/styles/images/cards/visa.png";
+import cabalImg from "@/styles/images/cards/cabal.png";
 
-const cardBrands = ["Visa", "Mastercard", "Amex", "Naranja", "Cabal", "Maestro"];
+type CardBrand = {
+  name: string;
+  image: StaticImageData;
+};
+
+const cardBrands: CardBrand[] = [
+  { name: "Visa", image: visaImg },
+  { name: "Mastercard", image: mastercardImg },
+  { name: "Amex", image: amexImg },
+  { name: "Naranja", image: naranjaImg },
+  { name: "Su Crédito", image: sucreditoImg },
+  { name: "Cabal", image: cabalImg },
+];
 
 export default function PaymentMethods() {
   return (
     <HomeSection id="pagos" variant="muted">
       <SectionHeader
         eyebrow="Medios de pago"
-        title="Formas de pago"
-        description="Trabajamos con distintas opciones para que elijas la que más te convenga."
+        title="Facilidades para tus proyectos"
+        description="Trabajamos con múltiples opciones de pago para garantizarte una experiencia adaptada a tus necesidades."
       />
 
       <div className={styles.paymentLayout}>
@@ -48,11 +67,6 @@ export default function PaymentMethods() {
             </div>
             <div>
               <p className={styles.paymentLabel}>Tarjetas de débito</p>
-              <div className={styles.cardGrid}>
-                {cardBrands.slice(0, 4).map((brand) => (
-                  <span key={brand} className={styles.cardChip}>{brand}</span>
-                ))}
-              </div>
             </div>
           </div>
 
@@ -66,12 +80,17 @@ export default function PaymentMethods() {
             </div>
             <div>
               <p className={styles.paymentLabel}>Tarjetas de crédito</p>
-              <p className={styles.paymentDetail}>
-                <span className={styles.promoTag}>Consultá promociones</span>
-              </p>
               <div className={styles.cardGrid}>
                 {cardBrands.map((brand) => (
-                  <span key={brand} className={styles.cardChip}>{brand}</span>
+                  <div key={brand.name} className={styles.cardChip}>
+                    <Image
+                      src={brand.image}
+                      alt=""
+                      className={styles.cardChipImage}
+                      aria-hidden
+                    />
+                    <span className={styles.cardChipLabel}>{brand.name}</span>
+                  </div>
                 ))}
               </div>
             </div>
@@ -80,9 +99,9 @@ export default function PaymentMethods() {
 
         <div className={styles.promoPanel}>
           <SectionHeader
-            eyebrow="Promociones"
-            title="Flyers de tarjetas"
-            description="Espacio reservado para promociones bancarias vigentes."
+            eyebrow="Beneficios vigentes"
+            title="Beneficios exclusivos"
+            description="Opciones de financiación vigentes con diferentes entidades financieras."
           />
           <div className={styles.promoFlyer}>
             Agregá acá los flyers de promociones con tarjetas de crédito

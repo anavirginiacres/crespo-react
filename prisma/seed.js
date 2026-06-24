@@ -35,7 +35,7 @@ async function main() {
   // Productos de ejemplo
   const prod1 = await prisma.product.upsert({
     where: { id: 1 },
-    update: {},
+    update: { new_product: true },
     create: {
       id_category: cat1.id,
       id_subcategory: sub1.id,
@@ -44,11 +44,12 @@ async function main() {
       materials: "Yute, algodón",
       quantity: "1",
       tags: "bolso, tejido, artesanal",
+      new_product: true,
     },
   });
   const prod2 = await prisma.product.upsert({
     where: { id: 2 },
-    update: {},
+    update: { new_product: false },
     create: {
       id_category: cat2.id,
       id_subcategory: sub3.id,
@@ -57,6 +58,7 @@ async function main() {
       materials: "Cerámica",
       details: "Hecho a mano. Colores surtidos.",
       tags: "deco, cerámica",
+      new_product: false,
     },
   });
 

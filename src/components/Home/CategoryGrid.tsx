@@ -15,7 +15,7 @@ export default function CategoryGrid({ categories }: CategoryGridProps) {
       <SectionHeader
         eyebrow="Catálogo"
         title="Explorá por categoría"
-        description="Encontrá productos de gráfica, textil y más según lo que necesites."
+        description="Descubrí todo lo que podemos crear para tu proyecto."
       />
 
       <div className={styles.categoryGrid}>
