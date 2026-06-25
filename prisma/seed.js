@@ -1,6 +1,10 @@
 require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
+
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+const EDITOR_PASSWORD = process.env.ADMIN_EDITOR_PASSWORD || "editor123";
 
 async function main() {
   // Categorías
@@ -94,7 +98,30 @@ async function main() {
     create: { id_product: prod2.id, src: "/img/productos/jarron-3.jpg" },
   });
 
-  console.log("Seed completado: categorías, subcategorías, productos e imagen de ejemplo.");
+  await prisma.adminUser.upsert({
+    where: { username: "admin" },
+    update: {},
+    create: {
+      username: "admin",
+      passwordHash: await bcrypt.hash(ADMIN_PASSWORD, 10),
+      role: "ADMIN",
+    },
+  });
+
+  await prisma.adminUser.upsert({
+    where: { username: "editor" },
+    update: {},
+    create: {
+      username: "editor",
+      passwordHash: await bcrypt.hash(EDITOR_PASSWORD, 10),
+      role: "USER",
+    },
+  });
+
+  console.log(
+    "Seed completado: categorías, subcategorías, productos, imágenes y usuarios admin."
+  );
+  console.log("Usuarios admin: admin (ADMIN), editor (USER)");
 }
 
 main()

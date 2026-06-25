@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.scss";
 import Nav from "@/components/Navigation/Nav";
-import Footer from "@/components/Footer/Footer";
+import LayoutChrome from "@/components/LayoutChrome";
 import { CartProvider } from "@/context/CartContext";
 import logoIcon from "@/styles/images/logo-redondo.png";
 
@@ -23,12 +23,8 @@ export default function RootLayout({
     <html lang="es">
       <body>
         <CartProvider>
-          <Nav />
-
-          {children}
+          <LayoutChrome nav={<Nav />}>{children}</LayoutChrome>
         </CartProvider>
-
-        <Footer />
       </body>
     </html>
   );
