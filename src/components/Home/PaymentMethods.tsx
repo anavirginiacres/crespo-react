@@ -7,6 +7,10 @@ import naranjaImg from "@/styles/images/cards/naranjax.png";
 import sucreditoImg from "@/styles/images/cards/sucredito.svg";
 import visaImg from "@/styles/images/cards/visa.png";
 import cabalImg from "@/styles/images/cards/cabal.png";
+import dinamicaImg from "@/styles/images/cards/dinamica.png";
+import unicaImg from "@/styles/images/cards/unica.png";
+import solImg from "@/styles/images/cards/sol.png";
+import credicashImg from "@/styles/images/cards/credicash.png";
 
 type CardBrand = {
   name: string;
@@ -17,9 +21,13 @@ const cardBrands: CardBrand[] = [
   { name: "Visa", image: visaImg },
   { name: "Mastercard", image: mastercardImg },
   { name: "Amex", image: amexImg },
-  { name: "Naranja", image: naranjaImg },
+  { name: "Naranja X", image: naranjaImg },
   { name: "Su Crédito", image: sucreditoImg },
   { name: "Cabal", image: cabalImg },
+  { name: "Dinámica", image: dinamicaImg },
+  { name: "Única", image: unicaImg },
+  { name: "Sol", image: solImg },
+  { name: "Credicash", image: credicashImg },
 ];
 
 export default function PaymentMethods() {
@@ -78,37 +86,37 @@ export default function PaymentMethods() {
                 <path d="M6 15h.01M10 15h4" />
               </svg>
             </div>
-            <div>
-              <p className={styles.paymentLabel}>Tarjetas de crédito</p>
-              <div className={styles.cardGrid}>
-                {cardBrands.map((brand) => (
-                  <div key={brand.name} className={styles.cardChip}>
-                    <Image
-                      src={brand.image}
-                      alt=""
-                      className={styles.cardChipImage}
-                      aria-hidden
-                    />
-                    <span className={styles.cardChipLabel}>{brand.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <p className={styles.paymentLabel}>Tarjetas de crédito</p>
           </div>
         </div>
 
         <div className={styles.promoPanel}>
           <SectionHeader
-            eyebrow="Beneficios vigentes"
-            title="Beneficios exclusivos"
-            description="Opciones de financiación vigentes con diferentes entidades financieras."
+            eyebrow="Financiación"
+            title="Tarjetas de Crédito"
+            description="Consultá por promociones, cuotas o recargos. Sin interés en 1 cuota."
           />
           <div className={styles.promoFlyer}>
+            <div className={styles.cardGrid}>
+              {cardBrands.map((brand) => (
+                <div key={brand.name} className={styles.cardChip}>
+                  <Image
+                    src={brand.image}
+                    alt=""
+                    className={styles.cardChipImage}
+                    aria-hidden
+                  />
+                  <span className={styles.cardChipLabel}>{brand.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* <div className={styles.promoFlyer}>
             Agregá acá los flyers de promociones con tarjetas de crédito
           </div>
           <div className={styles.promoFlyer}>
             Segundo espacio para campañas y cuotas sin interés
-          </div>
+          </div> */}
         </div>
       </div>
     </HomeSection>
