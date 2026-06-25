@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import logoHeader from "@/styles/images/logo-original.png";
 import type { CategoryNav } from "@/lib/categories";
+import type { ProductQuantityOptionsMap } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
 import SearchBar from "./SearchBar";
 import SubNavigation from "./SubNavigation";
@@ -14,14 +15,20 @@ import styles from "./Nav.module.scss";
 
 type NavBarProps = {
   categories: CategoryNav[];
+  quantityOptionsByProductId?: ProductQuantityOptionsMap;
 };
 
-export default function NavBar({ categories }: NavBarProps) {
+export default function NavBar({
+  categories,
+  quantityOptionsByProductId = {},
+}: NavBarProps) {
   const pathname = usePathname();
-  const { totalItems } = useCart();
+  const { totalItems, itemAddedSignal } = useCart();
   const headerRef = useRef<HTMLElement>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isBadgeAnimating, setIsBadgeAnimating] = useState(false);
+  const lastAddedSignalRef = useRef(0);
 
   function handleContactClick(event: React.MouseEvent<HTMLAnchorElement>) {
     if (pathname !== "/") return;
@@ -30,6 +37,19 @@ export default function NavBar({ categories }: NavBarProps) {
     document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
     window.history.pushState(null, "", "/#contacto");
   }
+
+  useEffect(() => {
+    if (itemAddedSignal === lastAddedSignalRef.current) return;
+
+    lastAddedSignalRef.current = itemAddedSignal;
+    setIsBadgeAnimating(true);
+
+    const timeoutId = window.setTimeout(() => {
+      setIsBadgeAnimating(false);
+    }, 600);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [itemAddedSignal]);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 12);
@@ -116,7 +136,9 @@ export default function NavBar({ categories }: NavBarProps) {
 
               <button
                 type="button"
-                className={styles.cartButton}
+                className={`${styles.cartButton}${
+                  isBadgeAnimating ? ` ${styles.cartButtonPulse}` : ""
+                }`}
                 onClick={() => setIsCartOpen(true)}
                 aria-label={`Abrir carrito${totalItems > 0 ? `, ${totalItems} productos` : ""}`}
               >
@@ -136,7 +158,13 @@ export default function NavBar({ categories }: NavBarProps) {
                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                 </svg>
                 {totalItems > 0 && (
-                  <span className={styles.cartBadge}>{totalItems}</span>
+                  <span
+                    className={`${styles.cartBadge}${
+                      isBadgeAnimating ? ` ${styles.cartBadgePulse}` : ""
+                    }`}
+                  >
+                    {totalItems}
+                  </span>
                 )}
               </button>
             </div>
@@ -146,7 +174,11 @@ export default function NavBar({ categories }: NavBarProps) {
         <SubNavigation categories={categories} />
       </header>
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        quantityOptionsByProductId={quantityOptionsByProductId}
+      />
     </>
   );
 }

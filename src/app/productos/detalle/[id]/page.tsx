@@ -17,6 +17,7 @@ function mapProductDetail(
     id: product.id,
     name: product.name,
     caption: product.caption,
+    image: product.image,
     colors: product.colors,
     materials: product.materials,
     measures: product.measures,

@@ -1,0 +1,153 @@
+@use "../../styles/variables" as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-24;
+  background: rgba($black, 0.55);
+}
+
+.modal {
+  position: relative;
+  width: min(100%, 480px);
+  max-height: calc(100vh - #{$spacing-64});
+  overflow: auto;
+  padding: $spacing-24;
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-2xl;
+}
+
+.closeButton {
+  position: absolute;
+  top: $spacing-12;
+  right: $spacing-12;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: $brand-light-grey;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.title {
+  margin: 0 0 $spacing-8;
+  font-family: $font-primary;
+  font-size: $fs-20;
+  line-height: $lh-20;
+}
+
+.description {
+  margin: 0 0 $spacing-24;
+  font-size: $fs-14;
+  line-height: 1.6;
+  color: $brand-dark-grey;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+}
+
+.label {
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $brand-black;
+}
+
+.input {
+  width: 100%;
+  padding: $spacing-12 $spacing-16;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-md;
+  background: $white;
+  font: inherit;
+  color: $brand-black;
+  box-sizing: border-box;
+  transition: border-color $transition-md;
+
+  &:focus {
+    outline: none;
+    border-color: $brand-blue;
+  }
+}
+
+.hint {
+  margin: 0;
+  font-size: $fs-12;
+  line-height: 1.5;
+  color: $brand-dark-grey;
+}
+
+.error {
+  margin: 0;
+  font-size: $fs-14;
+  color: $brand-pink;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-12;
+  margin-top: $spacing-8;
+}
+
+.secondaryButton,
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: $spacing-12 $spacing-16;
+  border-radius: $border-radius-md;
+  font: inherit;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  cursor: pointer;
+  transition:
+    background $transition-md,
+    color $transition-md,
+    border-color $transition-md;
+}
+
+.secondaryButton {
+  border: 1px solid $brand-grey;
+  background: $white;
+  color: $brand-black;
+
+  &:hover {
+    border-color: $brand-blue;
+    color: $brand-blue;
+  }
+}
+
+.primaryButton {
+  border: 0;
+  background: $brand-pink;
+  color: $white;
+
+  &:hover {
+    background: #c40067;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}

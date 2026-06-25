@@ -1,4 +1,24 @@
 import { prisma } from "@/lib/prisma";
+import { getProductQuantityOptions } from "@/lib/productOptions";
+
+export type ProductQuantityOptionsMap = Record<number, string[]>;
+
+export async function getProductQuantityOptionsMap(): Promise<ProductQuantityOptionsMap> {
+  const products = await prisma.product.findMany({
+    select: { id: true, quantity: true },
+  });
+
+  const map: ProductQuantityOptionsMap = {};
+
+  for (const product of products) {
+    const options = getProductQuantityOptions(product.quantity);
+    if (options.length > 0) {
+      map[product.id] = options;
+    }
+  }
+
+  return map;
+}
 
 export type ProductFilters = {
   q?: string;
@@ -54,7 +74,6 @@ export async function getNewProducts(limit = 4) {
     orderBy: { id: "desc" },
     include: {
       category: true,
-      images: { take: 1 },
     },
   });
 }
@@ -79,7 +98,6 @@ export async function getProducts(filters: ProductFilters = {}) {
     include: {
       category: true,
       subcategory: true,
-      images: { take: 1 },
     },
     orderBy: { name: "asc" },
   });
@@ -97,7 +115,6 @@ export async function getCatalogProducts() {
     include: {
       category: true,
       subcategory: true,
-      images: { take: 1 },
     },
     orderBy: { name: "asc" },
   });

@@ -623,6 +623,25 @@
   font-weight: $fw-bold;
 }
 
+.quantitySelect {
+  min-width: 120px;
+  padding: $spacing-8 $spacing-12;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-sm;
+  background: $white;
+  font: inherit;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  color: $brand-black;
+  cursor: pointer;
+  transition: border-color $transition-md;
+
+  &:focus {
+    outline: none;
+    border-color: $brand-blue;
+  }
+}
+
 .modalError {
   margin: 0 0 $spacing-16;
   font-size: $fs-14;

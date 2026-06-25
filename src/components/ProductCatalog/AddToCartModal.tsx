@@ -4,6 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import type { CatalogProduct } from "@/lib/catalogUtils";
 import { parseOptionList } from "@/lib/catalogUtils";
+import {
+  getDefaultOptionSelections,
+  getProductQuantityOptions,
+  parseQuantityOption,
+} from "@/lib/productOptions";
 import styles from "./ProductCatalog.module.scss";
 
 type CartConfirmPayload = {
@@ -11,6 +16,7 @@ type CartConfirmPayload = {
   name: string;
   image?: string | null;
   quantity: number;
+  quantityOptions?: string[];
   options: {
     color?: string;
     materials?: string;
@@ -42,6 +48,7 @@ export default function AddToCartModal({
     Partial<Record<OptionGroup["key"], string>>
   >({});
   const [quantity, setQuantity] = useState(1);
+  const [quantitySelection, setQuantitySelection] = useState("");
   const [error, setError] = useState("");
 
   const optionGroups = useMemo<OptionGroup[]>(() => {
@@ -62,13 +69,27 @@ export default function AddToCartModal({
     ].filter((group) => group.options.length > 0);
   }, [product]);
 
+  const quantityOptions = useMemo(
+    () => (product ? getProductQuantityOptions(product.quantity) : []),
+    [product]
+  );
+  const hasQuantityOptions = quantityOptions.length > 0;
+
   useEffect(() => {
     if (!isOpen) return;
 
-    setSelections({});
-    setQuantity(1);
+    setSelections(getDefaultOptionSelections(optionGroups));
+
+    if (hasQuantityOptions) {
+      setQuantitySelection(quantityOptions[0]);
+      setQuantity(parseQuantityOption(quantityOptions[0]));
+    } else {
+      setQuantitySelection("");
+      setQuantity(1);
+    }
+
     setError("");
-  }, [isOpen, product?.id]);
+  }, [isOpen, product?.id, optionGroups, hasQuantityOptions, quantityOptions]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -90,7 +111,7 @@ export default function AddToCartModal({
 
   if (!isOpen || !product) return null;
 
-  const imageSrc = product.images[0]?.src;
+  const imageSrc = product.image;
 
   const handleConfirm = () => {
     for (const group of optionGroups) {
@@ -105,6 +126,7 @@ export default function AddToCartModal({
       name: product.name,
       image: imageSrc ?? null,
       quantity,
+      quantityOptions: hasQuantityOptions ? quantityOptions : undefined,
       options: {
         color: selections.color,
         materials: selections.materials,
@@ -173,26 +195,50 @@ export default function AddToCartModal({
         )}
 
         <div className={styles.quantityRow}>
-          <span className={styles.optionLegend}>Cantidad</span>
-          <div className={styles.quantityControls}>
-            <button
-              type="button"
-              className={styles.quantityButton}
-              onClick={() => setQuantity((value) => Math.max(1, value - 1))}
-              aria-label="Disminuir cantidad"
+          <label
+            htmlFor={hasQuantityOptions ? "modal-product-quantity" : undefined}
+            className={styles.optionLegend}
+          >
+            Cantidad
+          </label>
+          {hasQuantityOptions ? (
+            <select
+              id="modal-product-quantity"
+              className={styles.quantitySelect}
+              value={quantitySelection}
+              onChange={(event) => {
+                const value = event.target.value;
+                setQuantitySelection(value);
+                setQuantity(parseQuantityOption(value));
+              }}
             >
-              −
-            </button>
-            <span className={styles.quantityValue}>{quantity}</span>
-            <button
-              type="button"
-              className={styles.quantityButton}
-              onClick={() => setQuantity((value) => value + 1)}
-              aria-label="Aumentar cantidad"
-            >
-              +
-            </button>
-          </div>
+              {quantityOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <div className={styles.quantityControls}>
+              <button
+                type="button"
+                className={styles.quantityButton}
+                onClick={() => setQuantity((value) => Math.max(1, value - 1))}
+                aria-label="Disminuir cantidad"
+              >
+                −
+              </button>
+              <span className={styles.quantityValue}>{quantity}</span>
+              <button
+                type="button"
+                className={styles.quantityButton}
+                onClick={() => setQuantity((value) => value + 1)}
+                aria-label="Aumentar cantidad"
+              >
+                +
+              </button>
+            </div>
+          )}
         </div>
 
         {error && <p className={styles.modalError}>{error}</p>}

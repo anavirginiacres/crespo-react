@@ -5,10 +5,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import {
+  buildProductGalleryImages,
+  getDefaultOptionSelections,
   getProductOptionGroups,
+  getProductQuantityOptions,
+  parseQuantityOption,
   type ProductDetailData,
   type ProductOptionKey,
 } from "@/lib/productOptions";
+import { parseOptionList } from "@/lib/catalogUtils";
 import logoRedondo from "@/styles/images/logo-redondo.png";
 import styles from "./ProductDetail.module.scss";
 
@@ -39,6 +44,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     Partial<Record<ProductOptionKey, string>>
   >({});
   const [quantity, setQuantity] = useState(1);
+  const [quantitySelection, setQuantitySelection] = useState("");
   const [error, setError] = useState("");
   const [addedMessage, setAddedMessage] = useState("");
 
@@ -56,23 +62,53 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     [product]
   );
 
-  const activeImage = product.images[activeImageIndex];
-  const hasGallery = product.images.length > 1;
+  const quantityOptions = useMemo(
+    () => getProductQuantityOptions(product.quantity),
+    [product.quantity]
+  );
+  const hasQuantityOptions = quantityOptions.length > 0;
+
+  const galleryImages = useMemo(
+    () => buildProductGalleryImages(product),
+    [product]
+  );
+
+  const activeImage = galleryImages[activeImageIndex];
+  const hasGallery = galleryImages.length > 1;
 
   useEffect(() => {
-    product.images.forEach((image) => {
+    galleryImages.forEach((image) => {
       const preload = new window.Image();
       preload.src = image.src;
     });
-  }, [product.images]);
+  }, [galleryImages]);
+
+  useEffect(() => {
+    setActiveImageIndex(0);
+    setSelections(getDefaultOptionSelections(optionGroups));
+
+    if (hasQuantityOptions) {
+      setQuantitySelection(quantityOptions[0]);
+      setQuantity(parseQuantityOption(quantityOptions[0]));
+    } else {
+      setQuantitySelection("");
+      setQuantity(1);
+    }
+
+    setError("");
+    setAddedMessage("");
+  }, [product.id, optionGroups, hasQuantityOptions, quantityOptions]);
 
   const infoItems = [
-    { label: "Cantidad mínima", value: product.quantity },
+    ...(hasQuantityOptions
+      ? []
+      : [{ label: "Cantidad mínima", value: product.quantity }]),
     { label: "Detalles", value: product.details },
-    { label: "Precauciones", value: product.caution },
+    { label: "A tener en cuenta", value: product.caution },
     { label: "Tiempo de entrega", value: product.delay },
-    { label: "Tags", value: product.tags },
   ].filter((item) => item.value?.trim());
+
+  const tags = useMemo(() => parseOptionList(product.tags), [product.tags]);
 
   const handleAddToCart = () => {
     for (const group of optionGroups) {
@@ -85,8 +121,9 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     addItem({
       productId: product.id,
       name: product.name,
-      image: activeImage?.src ?? product.images[0]?.src ?? null,
+      image: activeImage?.src ?? product.image ?? null,
       quantity,
+      quantityOptions: hasQuantityOptions ? quantityOptions : undefined,
       options: {
         color: selections.color,
         materials: selections.materials,
@@ -121,10 +158,10 @@ export default function ProductDetail({ product }: ProductDetailProps) {
       <div className={styles.mainLayout}>
         <div className={styles.mediaColumn}>
           <div className={styles.mainImageWrap}>
-            {product.images.length === 0 ? (
+            {galleryImages.length === 0 ? (
               <ImageFallback />
             ) : (
-              product.images.map((image, index) => (
+              galleryImages.map((image, index) => (
                 <div
                   key={image.id}
                   className={`${styles.mainImageSlide}${
@@ -155,7 +192,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
           {hasGallery && (
             <div className={styles.thumbnailRow}>
-              {product.images.map((image, index) => (
+              {galleryImages.map((image, index) => (
                 <button
                   key={image.id}
                   type="button"
@@ -190,7 +227,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         <div className={styles.infoColumn}>
           <p className={styles.price}>Consultar precio</p>
 
-          {infoItems.length > 0 && (
+          {(infoItems.length > 0 || tags.length > 0) && (
             <dl className={styles.infoList}>
               {infoItems.map((item) => (
                 <div key={item.label} className={styles.infoItem}>
@@ -198,6 +235,22 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                   <dd>{item.value}</dd>
                 </div>
               ))}
+
+              {tags.length > 0 && (
+                <div className={styles.infoItem}>
+                  <dd className={styles.tagList}>
+                    {tags.map((tag) => (
+                      <Link
+                        key={tag}
+                        href={`/productos?q=${encodeURIComponent(tag)}`}
+                        className={styles.tagLink}
+                      >
+                        #{tag}
+                      </Link>
+                    ))}
+                  </dd>
+                </div>
+              )}
             </dl>
           )}
 
@@ -230,26 +283,50 @@ export default function ProductDetail({ product }: ProductDetailProps) {
           ))}
 
           <div className={styles.quantityRow}>
-            <span className={styles.optionLegend}>Cantidad</span>
-            <div className={styles.quantityControls}>
-              <button
-                type="button"
-                className={styles.quantityButton}
-                onClick={() => setQuantity((value) => Math.max(1, value - 1))}
-                aria-label="Disminuir cantidad"
+            <label
+              htmlFor={hasQuantityOptions ? "product-quantity" : undefined}
+              className={styles.optionLegend}
+            >
+              Cantidad
+            </label>
+            {hasQuantityOptions ? (
+              <select
+                id="product-quantity"
+                className={styles.quantitySelect}
+                value={quantitySelection}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setQuantitySelection(value);
+                  setQuantity(parseQuantityOption(value));
+                }}
               >
-                −
-              </button>
-              <span className={styles.quantityValue}>{quantity}</span>
-              <button
-                type="button"
-                className={styles.quantityButton}
-                onClick={() => setQuantity((value) => value + 1)}
-                aria-label="Aumentar cantidad"
-              >
-                +
-              </button>
-            </div>
+                {quantityOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <div className={styles.quantityControls}>
+                <button
+                  type="button"
+                  className={styles.quantityButton}
+                  onClick={() => setQuantity((value) => Math.max(1, value - 1))}
+                  aria-label="Disminuir cantidad"
+                >
+                  −
+                </button>
+                <span className={styles.quantityValue}>{quantity}</span>
+                <button
+                  type="button"
+                  className={styles.quantityButton}
+                  onClick={() => setQuantity((value) => value + 1)}
+                  aria-label="Aumentar cantidad"
+                >
+                  +
+                </button>
+              </div>
+            )}
           </div>
 
           {error && <p className={styles.error}>{error}</p>}
@@ -272,7 +349,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
             Más imágenes de trabajos realizados sobre este producto.
           </p>
           <div className={styles.galleryGrid}>
-            {product.images.map((image, index) => (
+            {galleryImages.map((image, index) => (
               <button
                 key={image.id}
                 type="button"

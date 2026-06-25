@@ -35,12 +35,13 @@ async function main() {
   // Productos de ejemplo
   const prod1 = await prisma.product.upsert({
     where: { id: 1 },
-    update: { new_product: true },
+    update: { new_product: true, image: "/img/productos/bolso-1.jpg" },
     create: {
       id_category: cat1.id,
       id_subcategory: sub1.id,
       name: "Bolso tejido",
       caption: "Bolso artesanal",
+      image: "/img/productos/bolso-1.jpg",
       materials: "Yute, algodón",
       quantity: "1",
       tags: "bolso, tejido, artesanal",
@@ -51,6 +52,7 @@ async function main() {
     where: { id: 2 },
     update: {
       new_product: false,
+      image: "/img/productos/jarron-1.jpg",
       colors: "Blanco, Negro, Terracota",
       materials: "Cerámica, Esmaltada",
       measures: "15 cm, 20 cm",
@@ -60,6 +62,7 @@ async function main() {
       id_subcategory: sub3.id,
       name: "Jarrón cerámica",
       caption: "Jarrón hecho a mano",
+      image: "/img/productos/jarron-1.jpg",
       materials: "Cerámica, Esmaltada",
       measures: "15 cm, 20 cm",
       colors: "Blanco, Negro, Terracota",
