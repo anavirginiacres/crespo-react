@@ -205,6 +205,24 @@
   }
 }
 
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-8 $spacing-12;
+}
+
+.tagLink {
+  color: $brand-blue;
+  font-size: $fs-14;
+  font-weight: $fw-medium;
+  text-decoration: none;
+
+  &:hover {
+    color: $brand-pink;
+    text-decoration: none;
+  }
+}
+
 .optionGroup {
   margin: 0;
   padding: 0;

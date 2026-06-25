@@ -10,6 +10,7 @@ import {
   type ProductDetailData,
   type ProductOptionKey,
 } from "@/lib/productOptions";
+import { parseOptionList } from "@/lib/catalogUtils";
 import logoRedondo from "@/styles/images/logo-redondo.png";
 import styles from "./ProductDetail.module.scss";
 
@@ -77,10 +78,11 @@ export default function ProductDetail({ product }: ProductDetailProps) {
   const infoItems = [
     { label: "Cantidad mínima", value: product.quantity },
     { label: "Detalles", value: product.details },
-    { label: "Precauciones", value: product.caution },
+    { label: "A tener en cuenta", value: product.caution },
     { label: "Tiempo de entrega", value: product.delay },
-    { label: "Tags", value: product.tags },
   ].filter((item) => item.value?.trim());
+
+  const tags = useMemo(() => parseOptionList(product.tags), [product.tags]);
 
   const handleAddToCart = () => {
     for (const group of optionGroups) {
@@ -198,7 +200,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         <div className={styles.infoColumn}>
           <p className={styles.price}>Consultar precio</p>
 
-          {infoItems.length > 0 && (
+          {(infoItems.length > 0 || tags.length > 0) && (
             <dl className={styles.infoList}>
               {infoItems.map((item) => (
                 <div key={item.label} className={styles.infoItem}>
@@ -206,6 +208,22 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                   <dd>{item.value}</dd>
                 </div>
               ))}
+
+              {tags.length > 0 && (
+                <div className={styles.infoItem}>
+                  <dd className={styles.tagList}>
+                    {tags.map((tag) => (
+                      <Link
+                        key={tag}
+                        href={`/productos?q=${encodeURIComponent(tag)}`}
+                        className={styles.tagLink}
+                      >
+                        #{tag}
+                      </Link>
+                    ))}
+                  </dd>
+                </div>
+              )}
             </dl>
           )}
 
