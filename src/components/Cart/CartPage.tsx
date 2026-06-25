@@ -1,17 +1,25 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import CartLineQuantity from "@/components/Cart/CartLineQuantity";
+import QuoteContactModal from "@/components/Cart/QuoteContactModal";
 import { getLineQuantityOptions } from "@/components/Cart/cartQuantityUtils";
 import { WHATSAPP_CONTACTS } from "@/lib/contact";
 import type { ProductQuantityOptionsMap } from "@/lib/products";
 import {
+  getClientContact,
+  isValidClientContact,
+  saveClientContact,
+  type ClientContact,
+} from "@/lib/clientContact";
+import {
   buildQuoteMailtoUrl,
   buildQuoteWhatsAppUrl,
   formatCartQuoteMessage,
+  type QuoteAction,
 } from "@/lib/cartQuote";
 import logoRedondo from "@/styles/images/logo-redondo.png";
 import styles from "./CartPage.module.scss";
@@ -82,20 +90,72 @@ export default function CartPage({
   const { items, removeItem, updateQuantity, clearCart, totalItems } =
     useCart();
   const [mounted, setMounted] = useState(false);
+  const [clientContact, setClientContact] = useState<ClientContact | null>(
+    null
+  );
+  const [pendingQuoteAction, setPendingQuoteAction] =
+    useState<QuoteAction | null>(null);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    setClientContact(getClientContact());
   }, []);
 
-  const quoteMessage = useMemo(() => formatCartQuoteMessage(items), [items]);
-  const emailQuoteUrl = useMemo(() => buildQuoteMailtoUrl(items), [items]);
-  const whatsappGraficaUrl = useMemo(
-    () => buildQuoteWhatsAppUrl(items, WHATSAPP_CONTACTS.grafica.phone),
+  const executeQuoteAction = useCallback(
+    (action: QuoteAction, contact: ClientContact) => {
+      if (action === "email") {
+        window.location.href = buildQuoteMailtoUrl(items, contact);
+        return;
+      }
+
+      const phone =
+        action === "whatsapp-grafica"
+          ? WHATSAPP_CONTACTS.grafica.phone
+          : WHATSAPP_CONTACTS.textil.phone;
+
+      window.open(buildQuoteWhatsAppUrl(items, phone, contact), "_blank");
+    },
     [items]
   );
-  const whatsappTextilUrl = useMemo(
-    () => buildQuoteWhatsAppUrl(items, WHATSAPP_CONTACTS.textil.phone),
-    [items]
+
+  const handleQuoteRequest = useCallback(
+    (action: QuoteAction) => {
+      const contact = clientContact ?? getClientContact();
+
+      if (isValidClientContact(contact)) {
+        executeQuoteAction(action, contact);
+        return;
+      }
+
+      setPendingQuoteAction(action);
+      setIsContactModalOpen(true);
+    },
+    [clientContact, executeQuoteAction]
+  );
+
+  const handleContactSubmit = useCallback(
+    (contact: ClientContact) => {
+      saveClientContact(contact);
+      setClientContact(contact);
+      setIsContactModalOpen(false);
+
+      if (pendingQuoteAction) {
+        executeQuoteAction(pendingQuoteAction, contact);
+        setPendingQuoteAction(null);
+      }
+    },
+    [executeQuoteAction, pendingQuoteAction]
+  );
+
+  const handleContactModalClose = useCallback(() => {
+    setIsContactModalOpen(false);
+    setPendingQuoteAction(null);
+  }, []);
+
+  const quoteMessage = useMemo(
+    () => formatCartQuoteMessage(items, clientContact),
+    [items, clientContact]
   );
 
   if (!mounted) {
@@ -165,10 +225,6 @@ export default function CartPage({
                     <CartItemMeta label="Color" value={item.options.color} />
                     <CartItemMeta label="Material" value={item.options.materials} />
                     <CartItemMeta label="Medida" value={item.options.measures} />
-                    <CartItemMeta
-                      label="Observaciones"
-                      value={item.options.details}
-                    />
                   </ul>
                 </div>
 
@@ -220,27 +276,36 @@ export default function CartPage({
             <pre className={styles.quotePreview}>{quoteMessage}</pre>
 
             <div className={styles.quoteActions}>
-              <a href={emailQuoteUrl} className={styles.quoteButton}>
+              <button
+                type="button"
+                className={styles.quoteButton}
+                onClick={() => handleQuoteRequest("email")}
+              >
                 Enviar por email
-              </a>
-              <a
-                href={whatsappGraficaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              </button>
+              <button
+                type="button"
                 className={`${styles.quoteButton} ${styles.quoteButtonWhatsapp}`}
+                onClick={() => handleQuoteRequest("whatsapp-grafica")}
               >
                 WhatsApp Gráfica
-              </a>
-              <a
-                href={whatsappTextilUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              </button>
+              <button
+                type="button"
                 className={`${styles.quoteButton} ${styles.quoteButtonWhatsapp}`}
+                onClick={() => handleQuoteRequest("whatsapp-textil")}
               >
                 WhatsApp Textil
-              </a>
+              </button>
             </div>
           </section>
+
+          <QuoteContactModal
+            isOpen={isContactModalOpen}
+            initialContact={clientContact ?? undefined}
+            onClose={handleContactModalClose}
+            onSubmit={handleContactSubmit}
+          />
         </>
       )}
 
