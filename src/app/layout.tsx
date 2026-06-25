@@ -3,15 +3,10 @@ import "./globals.scss";
 import Nav from "@/components/Navigation/Nav";
 import LayoutChrome from "@/components/LayoutChrome";
 import { CartProvider } from "@/context/CartContext";
-import logoIcon from "@/styles/images/logo-redondo.png";
 
 export const metadata: Metadata = {
   title: "FF Crespo",
   description: "Industria Gráfica y Textil",
-  icons: {
-    icon: logoIcon.src,
-    apple: logoIcon.src,
-  },
 };
 
 export default function RootLayout({
