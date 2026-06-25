@@ -16,11 +16,12 @@ export type CatalogProduct = {
   measures: string | null;
   details: string | null;
   tags: string | null;
+  quantity: string | null;
+  image: string | null;
   id_category: number;
   id_subcategory: number;
   category: { id: number; name: string };
   subcategory: { id: number; name: string };
-  images: { src: string }[];
 };
 
 export type FilterPill =

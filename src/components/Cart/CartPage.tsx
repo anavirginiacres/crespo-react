@@ -4,7 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
+import CartLineQuantity from "@/components/Cart/CartLineQuantity";
+import { getLineQuantityOptions } from "@/components/Cart/cartQuantityUtils";
 import { WHATSAPP_CONTACTS } from "@/lib/contact";
+import type { ProductQuantityOptionsMap } from "@/lib/products";
 import {
   buildQuoteMailtoUrl,
   buildQuoteWhatsAppUrl,
@@ -69,7 +72,13 @@ function CartItemMeta({
   );
 }
 
-export default function CartPage() {
+type CartPageProps = {
+  quantityOptionsByProductId?: ProductQuantityOptionsMap;
+};
+
+export default function CartPage({
+  quantityOptionsByProductId = {},
+}: CartPageProps) {
   const { items, removeItem, updateQuantity, clearCart, totalItems } =
     useCart();
   const [mounted, setMounted] = useState(false);
@@ -133,7 +142,13 @@ export default function CartPage() {
       ) : (
         <>
           <ul className={styles.itemList}>
-            {items.map((item) => (
+            {items.map((item) => {
+              const lineQuantityOptions = getLineQuantityOptions(
+                item,
+                quantityOptionsByProductId
+              );
+
+              return (
               <li key={item.lineId} className={styles.item}>
                 <div className={styles.itemMedia}>
                   <CartItemThumbnail src={item.image} alt={item.name} />
@@ -147,7 +162,6 @@ export default function CartPage() {
                   </h2>
 
                   <ul className={styles.itemMetaList}>
-                    <CartItemMeta label="Cantidad" value={String(item.quantity)} />
                     <CartItemMeta label="Color" value={item.options.color} />
                     <CartItemMeta label="Material" value={item.options.materials} />
                     <CartItemMeta label="Medida" value={item.options.measures} />
@@ -159,28 +173,15 @@ export default function CartPage() {
                 </div>
 
                 <div className={styles.itemActions}>
-                  <div className={styles.quantityControls}>
-                    <button
-                      type="button"
-                      className={styles.quantityButton}
-                      onClick={() =>
-                        updateQuantity(item.lineId, item.quantity - 1)
+                  <div className={styles.quantityField}>
+                    <span className={styles.quantityLabel}>Cantidad</span>
+                    <CartLineQuantity
+                      item={item}
+                      quantityOptions={lineQuantityOptions}
+                      onUpdate={(quantity) =>
+                        updateQuantity(item.lineId, quantity)
                       }
-                      aria-label={`Disminuir cantidad de ${item.name}`}
-                    >
-                      −
-                    </button>
-                    <span className={styles.quantityValue}>{item.quantity}</span>
-                    <button
-                      type="button"
-                      className={styles.quantityButton}
-                      onClick={() =>
-                        updateQuantity(item.lineId, item.quantity + 1)
-                      }
-                      aria-label={`Aumentar cantidad de ${item.name}`}
-                    >
-                      +
-                    </button>
+                    />
                   </div>
                   <button
                     type="button"
@@ -191,7 +192,8 @@ export default function CartPage() {
                   </button>
                 </div>
               </li>
-            ))}
+              );
+            })}
           </ul>
 
           <div className={styles.toolbar}>

@@ -28,7 +28,7 @@ function CardImageFallback() {
 }
 
 export default memo(function ProductCard({ product, onAddToCart }: ProductCardProps) {
-  const imageSrc = product.images[0]?.src;
+  const imageSrc = product.image;
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {

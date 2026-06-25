@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import logoHeader from "@/styles/images/logo-original.png";
 import type { CategoryNav } from "@/lib/categories";
+import type { ProductQuantityOptionsMap } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
 import SearchBar from "./SearchBar";
 import SubNavigation from "./SubNavigation";
@@ -14,9 +15,13 @@ import styles from "./Nav.module.scss";
 
 type NavBarProps = {
   categories: CategoryNav[];
+  quantityOptionsByProductId?: ProductQuantityOptionsMap;
 };
 
-export default function NavBar({ categories }: NavBarProps) {
+export default function NavBar({
+  categories,
+  quantityOptionsByProductId = {},
+}: NavBarProps) {
   const pathname = usePathname();
   const { totalItems, itemAddedSignal } = useCart();
   const headerRef = useRef<HTMLElement>(null);
@@ -169,7 +174,11 @@ export default function NavBar({ categories }: NavBarProps) {
         <SubNavigation categories={categories} />
       </header>
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        quantityOptionsByProductId={quantityOptionsByProductId}
+      />
     </>
   );
 }

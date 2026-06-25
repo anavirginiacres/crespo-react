@@ -22,6 +22,7 @@ export type CartItem = {
   name: string;
   image?: string | null;
   quantity: number;
+  quantityOptions?: string[];
   options: CartItemOptions;
 };
 
@@ -30,6 +31,7 @@ type AddCartItemInput = {
   name: string;
   image?: string | null;
   quantity?: number;
+  quantityOptions?: string[];
   options?: CartItemOptions;
 };
 
@@ -66,6 +68,7 @@ function normalizeCartItems(stored: unknown): CartItem[] {
       productId?: number;
       name?: string;
       quantity?: number;
+      quantityOptions?: string[];
     };
 
     if (!record.productId || !record.name) continue;
@@ -79,6 +82,9 @@ function normalizeCartItems(stored: unknown): CartItem[] {
       name: record.name,
       image: record.image ?? null,
       quantity: record.quantity ?? 1,
+      quantityOptions: record.quantityOptions?.length
+        ? record.quantityOptions
+        : undefined,
       options,
     });
   }
@@ -120,6 +126,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         name: item.name,
         image: item.image ?? null,
         quantity: item.quantity ?? 1,
+        quantityOptions: item.quantityOptions?.length
+          ? item.quantityOptions
+          : undefined,
         options,
       },
     ]);
@@ -145,10 +154,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const clearCart = useCallback(() => setItems([]), []);
 
-  const totalItems = useMemo(
-    () => items.reduce((sum, item) => sum + item.quantity, 0),
-    [items]
-  );
+  const totalItems = useMemo(() => items.length, [items]);
 
   const value = useMemo(
     () => ({

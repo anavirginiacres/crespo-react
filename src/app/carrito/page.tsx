@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getProductQuantityOptionsMap } from "@/lib/products";
 import CartPage from "@/components/Cart/CartPage";
 
 export const metadata: Metadata = {
@@ -7,10 +8,12 @@ export const metadata: Metadata = {
     "Revisá los productos de tu carrito y solicitá presupuesto por email o WhatsApp.",
 };
 
-export default function CarritoPage() {
+export default async function CarritoPage() {
+  const quantityOptionsByProductId = await getProductQuantityOptionsMap();
+
   return (
     <main>
-      <CartPage />
+      <CartPage quantityOptionsByProductId={quantityOptionsByProductId} />
     </main>
   );
 }

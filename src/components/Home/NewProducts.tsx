@@ -18,7 +18,7 @@ function ProductBanner({
   variant: "featured" | "compact";
   accent: (typeof accents)[number];
 }) {
-  const imageSrc = product.images[0]?.src;
+  const imageSrc = product.image;
 
   return (
     <Link
