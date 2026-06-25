@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import {
+  getDefaultOptionSelections,
   getProductOptionGroups,
   type ProductDetailData,
   type ProductOptionKey,
@@ -65,6 +66,13 @@ export default function ProductDetail({ product }: ProductDetailProps) {
       preload.src = image.src;
     });
   }, [product.images]);
+
+  useEffect(() => {
+    setSelections(getDefaultOptionSelections(optionGroups));
+    setQuantity(1);
+    setError("");
+    setAddedMessage("");
+  }, [product.id, optionGroups]);
 
   const infoItems = [
     { label: "Cantidad mínima", value: product.quantity },

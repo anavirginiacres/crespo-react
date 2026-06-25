@@ -10,9 +10,10 @@ import {
   buildQuoteWhatsAppUrl,
   formatCartQuoteMessage,
 } from "@/lib/cartQuote";
-import logoHeader from "@/styles/images/logo-original.png";
 import logoRedondo from "@/styles/images/logo-redondo.png";
 import styles from "./CartPage.module.scss";
+
+const CART_EMPTY_LOGO_SIZE = 64;
 
 function CartItemThumbnail({
   src,
@@ -114,8 +115,10 @@ export default function CartPage() {
       {items.length === 0 ? (
         <div className={styles.emptyState}>
           <Image
-            src={logoHeader}
+            src={logoRedondo}
             alt="FF Crespo"
+            width={CART_EMPTY_LOGO_SIZE}
+            height={CART_EMPTY_LOGO_SIZE}
             className={styles.emptyLogo}
           />
           <h2 className={styles.emptyTitle}>Tu carrito está vacío</h2>

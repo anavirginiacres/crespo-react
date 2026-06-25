@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect } from "react";
 import { useCart } from "@/context/CartContext";
-import logoHeader from "@/styles/images/logo-original.png";
+import logoRedondo from "@/styles/images/logo-redondo.png";
 import styles from "./Nav.module.scss";
+
+const CART_EMPTY_LOGO_SIZE = 64;
 
 type CartDrawerProps = {
   isOpen: boolean;
@@ -13,6 +16,11 @@ type CartDrawerProps = {
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { items, removeItem, updateQuantity, clearCart, totalItems } = useCart();
+
+  useEffect(() => {
+    const preload = new window.Image();
+    preload.src = logoRedondo.src;
+  }, []);
 
   return (
     <>
@@ -42,8 +50,10 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         {items.length === 0 ? (
           <div className={styles.cartEmpty}>
             <Image
-              src={logoHeader}
+              src={logoRedondo}
               alt="FF Crespo"
+              width={CART_EMPTY_LOGO_SIZE}
+              height={CART_EMPTY_LOGO_SIZE}
               className={styles.cartEmptyLogo}
             />
             <p className={styles.cartEmptyText}>Tu carrito está vacío</p>

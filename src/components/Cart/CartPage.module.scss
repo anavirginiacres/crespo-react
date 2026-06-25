@@ -61,7 +61,8 @@
 
 .emptyLogo {
   width: 64px;
-  height: auto;
+  height: 64px;
+  object-fit: contain;
   opacity: 0.85;
 }
 

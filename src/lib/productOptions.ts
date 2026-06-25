@@ -28,6 +28,20 @@ export function getProductOptionGroups(product: {
   ].filter((group) => group.options.length > 0);
 }
 
+export function getDefaultOptionSelections(
+  optionGroups: ProductOptionGroup[]
+): Partial<Record<ProductOptionKey, string>> {
+  const selections: Partial<Record<ProductOptionKey, string>> = {};
+
+  for (const group of optionGroups) {
+    if (group.options.length === 1) {
+      selections[group.key] = group.options[0];
+    }
+  }
+
+  return selections;
+}
+
 export type ProductDetailData = {
   id: number;
   name: string;

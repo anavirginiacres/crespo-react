@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import type { CatalogProduct } from "@/lib/catalogUtils";
 import { parseOptionList } from "@/lib/catalogUtils";
+import { getDefaultOptionSelections } from "@/lib/productOptions";
 import styles from "./ProductCatalog.module.scss";
 
 type CartConfirmPayload = {
@@ -65,10 +66,10 @@ export default function AddToCartModal({
   useEffect(() => {
     if (!isOpen) return;
 
-    setSelections({});
+    setSelections(getDefaultOptionSelections(optionGroups));
     setQuantity(1);
     setError("");
-  }, [isOpen, product?.id]);
+  }, [isOpen, product?.id, optionGroups]);
 
   useEffect(() => {
     if (!isOpen) return;
