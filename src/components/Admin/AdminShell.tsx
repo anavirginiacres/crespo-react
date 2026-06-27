@@ -23,7 +23,10 @@ export default function AdminShell({ user, children }: AdminShellProps) {
   const links = [
     { href: "/admin/products", label: "Productos" },
     ...(user.role === "ADMIN"
-      ? [{ href: "/admin/approvals", label: "Aprobaciones" }]
+      ? [
+          { href: "/admin/approvals", label: "Aprobaciones" },
+          { href: "/admin/subcategories", label: "Subcategorías" },
+        ]
       : [{ href: "/admin/my-changes", label: "Mis cambios" }]),
   ];
 

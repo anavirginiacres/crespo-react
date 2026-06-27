@@ -232,6 +232,22 @@
   border-radius: $border-radius-md;
 }
 
+.subcategoryToolbar {
+  max-width: 420px;
+}
+
+.subcategoryForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: $spacing-16;
+  align-items: end;
+}
+
+.subcategoryFormActions {
+  display: flex;
+  align-items: center;
+}
+
 .listToolbar {
   display: grid;
   grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(160px, 1fr)) auto;
@@ -625,6 +641,16 @@
 
   .changeFilters {
     grid-template-columns: 1fr;
+  }
+
+  .subcategoryForm {
+    grid-template-columns: 1fr;
+  }
+
+  .subcategoryFormActions {
+    .primaryButton {
+      width: 100%;
+    }
   }
 
   .paginationBar {
