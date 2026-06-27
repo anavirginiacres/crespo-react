@@ -77,7 +77,7 @@ async function main() {
   });
 
   // Subcategorías (dependen de categorías)
-  const sub1 = await prisma.subcategory.upsert({
+  /* const sub1 = await prisma.subcategory.upsert({
     where: { id: 1 },
     update: {},
     create: { id_category: cat1.id, name: "Bolsos" },
@@ -91,7 +91,7 @@ async function main() {
     where: { id: 3 },
     update: {},
     create: { id_category: cat2.id, name: "Decoración" },
-  });
+  }); */
 
   // Productos de ejemplo
   /* const prod1 = await prisma.product.upsert({
