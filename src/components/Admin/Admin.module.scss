@@ -1,0 +1,665 @@
+@use "../../styles/variables" as *;
+
+.shell {
+  min-height: 100vh;
+  background: $brand-light-grey;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-16;
+  padding: $spacing-16 $spacing-24;
+  background: $white;
+  border-bottom: 1px solid $brand-grey;
+}
+
+.brand {
+  margin: 0;
+  font-family: $font-primary;
+  font-size: $fs-24;
+  color: $brand-black;
+  line-height: $lh-32;
+  margin-bottom: $spacing-8;
+}
+
+.userMeta {
+  margin: 0;
+  font-size: $fs-12;
+  color: $brand-dark-grey;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-12;
+}
+
+.nav {
+  display: flex;
+  gap: $spacing-12;
+  padding: $spacing-12 $spacing-24;
+  background: $white;
+  border-bottom: 1px solid $brand-grey;
+}
+
+.navLink {
+  padding: $spacing-8 $spacing-12;
+  border-radius: $border-radius-md;
+  color: $brand-black;
+  font-size: $fs-14;
+  font-weight: $fw-medium;
+  text-decoration: none !important;
+
+  &:hover,
+  &.navLinkActive {
+    background: rgba($brand-blue, 0.1);
+    color: $brand-blue;
+    text-decoration: none !important;
+  }
+}
+
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: $spacing-32 $spacing-24;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-24;
+  padding: $spacing-24;
+  background: $white;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-lg;
+}
+
+.panelTitle {
+  margin: 0;
+  font-family: $font-primary;
+  font-size: $fs-24;
+  line-height: $lh-32;
+  margin-bottom: $spacing-8;
+}
+
+.panelDescription {
+  margin: 0;
+  font-size: $fs-14;
+  line-height: 1.6;
+  color: $brand-dark-grey;
+}
+
+.loginPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-24;
+  background: $brand-light-grey;
+}
+
+.loginCard {
+  width: min(100%, 420px);
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+  padding: $spacing-32;
+  background: $white;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-lg;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $spacing-16;
+}
+
+.formGridFull {
+  grid-column: 1 / -1;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+}
+
+.label {
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: $spacing-12 $spacing-16;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-md;
+  background: $white;
+  font: inherit;
+  color: $brand-black;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: $brand-blue;
+  }
+}
+
+.textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-8;
+}
+
+.buttonRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-12;
+}
+
+.primaryButton,
+.secondaryButton,
+.dangerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: $spacing-12 $spacing-16;
+  border-radius: $border-radius-md;
+  font: inherit;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  cursor: pointer;
+  text-decoration: none !important;
+}
+
+.primaryButton {
+  border: 0;
+  background: $brand-blue;
+  color: $white !important;
+
+  &:hover {
+    background: $brand-black;
+  }
+}
+
+.secondaryButton {
+  border: 1px solid $brand-grey;
+  background: $white;
+  color: $brand-black !important;
+}
+
+.dangerButton {
+  border: 0;
+  background: $brand-pink;
+  color: $white !important;
+}
+
+.error {
+  margin: 0;
+  font-size: $fs-14;
+  color: $brand-pink;
+}
+
+.success {
+  margin: 0;
+  font-size: $fs-14;
+  color: $brand-blue;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $fs-14;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-md;
+}
+
+.listToolbar {
+  display: grid;
+  grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(160px, 1fr)) auto;
+  gap: $spacing-16;
+  align-items: end;
+}
+
+.listSearchField {
+  min-width: 0;
+}
+
+.listToolbarActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-12;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.listMeta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: $spacing-8;
+  font-size: $fs-14;
+  color: $brand-dark-grey;
+}
+
+.tableEmpty {
+  padding: $spacing-24 !important;
+  text-align: center;
+  color: $brand-dark-grey;
+}
+
+.tableRowSelected {
+  background: rgba($brand-blue, 0.08);
+}
+
+.productNameCell {
+  display: block;
+  font-weight: $fw-medium;
+}
+
+.productCaptionCell {
+  display: block;
+  margin-top: 2px;
+  font-size: $fs-12;
+  color: $brand-dark-grey;
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-12;
+}
+
+.paginationBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-16;
+}
+
+.paginationSummary {
+  margin: 0;
+  font-size: $fs-14;
+  color: $brand-dark-grey;
+}
+
+.paginationLabel {
+  font-size: $fs-14;
+  color: $brand-dark-grey;
+}
+
+.table th,
+.table td {
+  padding: $spacing-12;
+  border-bottom: 1px solid $brand-grey;
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  font-size: $fs-12;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $brand-dark-grey;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+}
+
+.badgePending {
+  background: rgba($brand-yellow, 0.35);
+}
+
+.badgeApproved {
+  background: rgba($brand-blue, 0.15);
+  color: $brand-blue;
+}
+
+.badgeRejected {
+  background: rgba($brand-pink, 0.15);
+  color: $brand-pink;
+}
+
+.imageList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.imageItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-12;
+  padding: $spacing-8 $spacing-12;
+  background: $brand-light-grey;
+  border-radius: $border-radius-md;
+}
+
+.payloadPreview {
+  margin: 0;
+  padding: $spacing-12;
+  background: $brand-light-grey;
+  border-radius: $border-radius-md;
+  font-size: $fs-12;
+  white-space: pre-wrap;
+  overflow: auto;
+}
+
+.changeCard {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+  padding: $spacing-24;
+  background: $white;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-lg;
+}
+
+.changeTabs {
+  display: flex;
+  gap: $spacing-8;
+  padding: $spacing-4;
+  background: $brand-light-grey;
+  border-radius: $border-radius-md;
+  width: fit-content;
+}
+
+.changeTab {
+  min-height: 40px;
+  padding: $spacing-8 $spacing-16;
+  border: 0;
+  border-radius: $border-radius-md;
+  background: transparent;
+  font: inherit;
+  font-size: $fs-14;
+  font-weight: $fw-medium;
+  color: $brand-dark-grey;
+  cursor: pointer;
+}
+
+.changeTabActive {
+  background: $white;
+  color: $brand-black;
+  box-shadow: $box-shadow-sm;
+}
+
+.changeFilters {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.4fr) minmax(140px, 1fr) repeat(2, minmax(130px, 0.8fr)) auto;
+  gap: $spacing-16;
+  align-items: end;
+}
+
+.changeFilterField {
+  min-width: 0;
+}
+
+.changeFilterActions {
+  display: flex;
+  align-items: center;
+  padding-bottom: 2px;
+}
+
+.changeAccordionList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+}
+
+.changeAccordion {
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-md;
+  background: $white;
+  overflow: hidden;
+
+  &[open] .changeAccordionChevron {
+    transform: rotate(180deg);
+  }
+}
+
+.changeAccordionSummary {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: $spacing-12;
+  align-items: center;
+  padding: $spacing-12 $spacing-16;
+  cursor: pointer;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.changeAccordionTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.changeAccordionMeta {
+  font-size: $fs-12;
+  color: $brand-dark-grey;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.changeAccordionChevron {
+  font-size: $fs-14;
+  color: $brand-dark-grey;
+  transition: transform 0.2s ease;
+}
+
+.changeAccordionBody {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-16;
+  padding: 0 $spacing-16 $spacing-16;
+  border-top: 1px solid $brand-grey;
+}
+
+.changeDiff {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+}
+
+.changeDiffHeader,
+.changeDiffRow {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.9fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: $spacing-12;
+  align-items: start;
+}
+
+.changeDiffHeader {
+  padding: 0 $spacing-12;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $brand-dark-grey;
+}
+
+.changeDiffRow {
+  padding: $spacing-12;
+  border-radius: $border-radius-md;
+  background: $brand-light-grey;
+  font-size: $fs-14;
+  line-height: 1.5;
+}
+
+.changeDiffRowHighlighted {
+  background: rgba($brand-pink, 0.1);
+  border-left: 3px solid $brand-pink;
+}
+
+.changeDiffLabel {
+  font-weight: $fw-medium;
+  color: $brand-black;
+}
+
+.changeDiffCurrent {
+  color: $brand-dark-grey;
+  word-break: break-word;
+}
+
+.changeDiffProposed,
+.changeDiffProposedLabel {
+  word-break: break-word;
+}
+
+.changeDiffProposedHighlight {
+  color: $brand-pink;
+  font-weight: $fw-bold;
+}
+
+.uploadField {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+}
+
+.fileInput {
+  width: 100%;
+  font: inherit;
+  font-size: $fs-14;
+  color: $brand-black;
+}
+
+.imagePreviewWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-12;
+}
+
+.imagePreview {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-md;
+  background: $brand-light-grey;
+}
+
+.imagePreviewMeta {
+  margin: 0;
+  font-size: $fs-12;
+  color: $brand-dark-grey;
+  word-break: break-all;
+}
+
+.pendingGalleryList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pendingGalleryItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-12;
+  padding: $spacing-8 $spacing-12;
+  background: $brand-light-grey;
+  border-radius: $border-radius-md;
+  font-size: $fs-12;
+}
+
+@media (max-width: $breakpoint-sm) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .listToolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .listToolbarActions {
+    justify-content: stretch;
+
+    .primaryButton,
+    .secondaryButton {
+      flex: 1;
+    }
+  }
+
+  .changeDiffHeader,
+  .changeDiffRow {
+    grid-template-columns: 1fr;
+  }
+
+  .changeFilters {
+    grid-template-columns: 1fr;
+  }
+
+  .paginationBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pagination {
+    justify-content: stretch;
+
+    .secondaryButton {
+      flex: 1;
+      min-width: 0;
+      padding-left: $spacing-8;
+      padding-right: $spacing-8;
+    }
+
+    .paginationLabel {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .changeAccordionSummary {
+    grid-template-columns: 1fr auto;
+  }
+
+  .changeAccordionMeta {
+    white-space: normal;
+  }
+
+  .header,
+  .nav,
+  .main {
+    padding-left: $spacing-16;
+    padding-right: $spacing-16;
+  }
+}

@@ -30,11 +30,11 @@ export default function Hero() {
             Desde diseño gráfico hasta producción textil, tenemos todo lo que necesitás en un solo lugar.
           </p>
 
-          <ul className={styles.tags} aria-label="Especialidades">
+          {/* <ul className={styles.tags} aria-label="Especialidades">
             {highlights.map((item) => (
               <li key={item}>{item}</li>
             ))}
-          </ul>
+          </ul> */}
 
           <div className={styles.actions}>
             <Link href="/productos" className={styles.primaryCta}>

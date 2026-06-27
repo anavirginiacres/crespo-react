@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
@@ -47,6 +48,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
   const [quantitySelection, setQuantitySelection] = useState("");
   const [error, setError] = useState("");
   const [addedMessage, setAddedMessage] = useState("");
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
   const markImageFailed = useCallback((src: string) => {
     setFailedSrcs((current) => {
@@ -75,6 +77,66 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
   const activeImage = galleryImages[activeImageIndex];
   const hasGallery = galleryImages.length > 1;
+  const canOpenGallery = galleryImages.length > 0;
+
+  const closeGallery = useCallback(() => {
+    setIsGalleryOpen(false);
+  }, []);
+
+  const openGallery = useCallback(() => {
+    if (galleryImages.length === 0) return;
+    setIsGalleryOpen(true);
+  }, [galleryImages.length]);
+
+  const showPreviousImage = useCallback(() => {
+    setActiveImageIndex(
+      (current) =>
+        (current - 1 + galleryImages.length) % galleryImages.length
+    );
+  }, [galleryImages.length]);
+
+  const showNextImage = useCallback(() => {
+    setActiveImageIndex((current) => (current + 1) % galleryImages.length);
+  }, [galleryImages.length]);
+
+  useEffect(() => {
+    if (!isGalleryOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeGallery();
+        return;
+      }
+
+      if (!hasGallery) return;
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        showPreviousImage();
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        showNextImage();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [
+    isGalleryOpen,
+    hasGallery,
+    closeGallery,
+    showPreviousImage,
+    showNextImage,
+  ]);
 
   useEffect(() => {
     galleryImages.forEach((image) => {
@@ -157,7 +219,27 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
       <div className={styles.mainLayout}>
         <div className={styles.mediaColumn}>
-          <div className={styles.mainImageWrap}>
+          <div
+            className={`${styles.mainImageWrap}${
+              canOpenGallery ? ` ${styles.mainImageWrapInteractive}` : ""
+            }`}
+            role={canOpenGallery ? "button" : undefined}
+            tabIndex={canOpenGallery ? 0 : undefined}
+            aria-label={
+              canOpenGallery ? `Ver ${product.name} en pantalla completa` : undefined
+            }
+            onClick={canOpenGallery ? openGallery : undefined}
+            onKeyDown={
+              canOpenGallery
+                ? (event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      openGallery();
+                    }
+                  }
+                : undefined
+            }
+          >
             {galleryImages.length === 0 ? (
               <ImageFallback />
             ) : (
@@ -341,6 +423,77 @@ export default function ProductDetail({ product }: ProductDetailProps) {
           </button>
         </div>
       </div>
+
+      {isGalleryOpen &&
+        activeImage &&
+        createPortal(
+          <div
+            className={styles.galleryOverlay}
+            onClick={closeGallery}
+            aria-hidden={false}
+          >
+            <div
+              className={styles.galleryDialog}
+              role="dialog"
+              aria-modal="true"
+              aria-label={`Galería de ${product.name}`}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                type="button"
+                className={styles.galleryClose}
+                onClick={closeGallery}
+                aria-label="Cerrar galería"
+              >
+                ×
+              </button>
+
+              {hasGallery && (
+                <>
+                  <button
+                    type="button"
+                    className={`${styles.galleryNav} ${styles.galleryNavPrev}`}
+                    onClick={showPreviousImage}
+                    aria-label="Imagen anterior"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.galleryNav} ${styles.galleryNavNext}`}
+                    onClick={showNextImage}
+                    aria-label="Imagen siguiente"
+                  >
+                    ›
+                  </button>
+                </>
+              )}
+
+              <div className={styles.galleryImageFrame}>
+                {failedSrcs.has(activeImage.src) ? (
+                  <ImageFallback size={64} />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={activeImage.src}
+                    alt={`${product.name} — imagen ${activeImageIndex + 1}`}
+                    className={styles.galleryModalImage}
+                    decoding="async"
+                    draggable={false}
+                    onError={() => markImageFailed(activeImage.src)}
+                  />
+                )}
+              </div>
+
+              {hasGallery && (
+                <p className={styles.galleryCounter} aria-live="polite">
+                  {activeImageIndex + 1} / {galleryImages.length}
+                </p>
+              )}
+            </div>
+          </div>,
+          document.body
+        )}
 
       {/* {hasGallery && (
         <section className={styles.gallerySection} aria-label="Galería de imágenes">

@@ -86,3 +86,43 @@ model CartItem {
 
   @@map("CartItems")
 }
+
+model AdminUser {
+  id           Int                    @id @default(autoincrement())
+  username     String                 @unique
+  passwordHash String
+  role         String
+  createdAt    DateTime               @default(now())
+  sessions     AdminSession[]
+  submissions  ProductChangeRequest[] @relation("SubmittedChanges")
+  reviews      ProductChangeRequest[] @relation("ReviewedChanges")
+
+  @@map("AdminUsers")
+}
+
+model AdminSession {
+  id        Int       @id @default(autoincrement())
+  token     String    @unique
+  userId    Int
+  expiresAt DateTime
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("AdminSessions")
+}
+
+model ProductChangeRequest {
+  id            Int        @id @default(autoincrement())
+  action        String
+  status        String     @default("PENDING")
+  productId     Int?
+  payload       String
+  submittedById Int
+  reviewedById  Int?
+  reviewNote    String?
+  createdAt     DateTime   @default(now())
+  reviewedAt    DateTime?
+  submittedBy   AdminUser  @relation("SubmittedChanges", fields: [submittedById], references: [id])
+  reviewedBy    AdminUser? @relation("ReviewedChanges", fields: [reviewedById], references: [id])
+
+  @@map("ProductChangeRequests")
+}

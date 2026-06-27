@@ -1,0 +1,92 @@
+@use "../../styles/variables" as *;
+
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--header-height) - 120px);
+  padding: $spacing-32 $spacing-16;
+}
+
+.card {
+  width: min(100%, 560px);
+  padding: $spacing-32;
+  text-align: center;
+  background: $brand-light-grey;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-lg;
+}
+
+.code {
+  margin: 0;
+  font-family: $font-primary;
+  font-size: clamp(4rem, 18vw, 6rem);
+  line-height: 1;
+  color: $brand-pink;
+}
+
+.title {
+  margin: $spacing-16 0 $spacing-8;
+  font-family: $font-primary;
+  font-size: $fs-32;
+  line-height: $lh-32;
+  color: $brand-black;
+}
+
+.description {
+  margin: 0 0 $spacing-32;
+  font-size: $fs-16;
+  line-height: 1.6;
+  color: $brand-dark-grey;
+  padding: 0 $spacing-32;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $spacing-12;
+}
+
+.primaryLink,
+.secondaryLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: $spacing-12 $spacing-16;
+  border-radius: $border-radius-md;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  text-decoration: none !important;
+}
+
+.primaryLink {
+  background: $brand-blue;
+  color: $white !important;
+
+  &:hover {
+    background: $brand-black;
+  }
+}
+
+.secondaryLink {
+  border: 1px solid $brand-grey;
+  background: $white;
+  color: $brand-black !important;
+}
+
+@media (max-width: $breakpoint-sm) {
+  .card {
+    padding: $spacing-32 $spacing-24;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .primaryLink,
+  .secondaryLink {
+    width: 100%;
+  }
+}
