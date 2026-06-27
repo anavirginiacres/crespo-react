@@ -5,18 +5,75 @@ const prisma = new PrismaClient();
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 const EDITOR_PASSWORD = process.env.ADMIN_EDITOR_PASSWORD || "editor123";
+const FERNANDO_PASSWORD = process.env.ADMIN_FERNANDO_PASSWORD || "f3rn4nd0";
+const TEXTIL_PASSWORD = process.env.ADMIN_TEXTIL_PASSWORD || "textil123";
 
 async function main() {
   // Categorías
   const cat1 = await prisma.category.upsert({
     where: { id: 1 },
     update: {},
-    create: { name: "Accesorios", icon: "bag" },
+    create: { name: "Bordados", icon: "embroidery" },
   });
   const cat2 = await prisma.category.upsert({
     where: { id: 2 },
     update: {},
-    create: { name: "Hogar", icon: "home" },
+    create: { name: "Cartelería", icon: "ads-sign-poster" },
+  });
+  const cat3 = await prisma.category.upsert({
+    where: { id: 3 },
+    update: {},
+    create: { name: "Enmarcados", icon: "picture-frame" },
+  });
+  const cat4 = await prisma.category.upsert({
+    where: { id: 4 },
+    update: {},
+    create: { name: "Estampados", icon: "tshirt-printing" },
+  });
+  const cat5 = await prisma.category.upsert({
+    where: { id: 5 },
+    update: {},
+    create: { name: "Identificadores", icon: "id-card" },
+  });
+  const cat6 = await prisma.category.upsert({
+    where: { id: 6 },
+    update: {},
+    create: { name: "Imprenta", icon: "multifunction-printer" },
+  });
+  const cat7 = await prisma.category.upsert({
+    where: { id: 7 },
+    update: {},
+    create: { name: "Indumentaria", icon: "uniform-tie" },
+  });
+  const cat8 = await prisma.category.upsert({
+    where: { id: 8 },
+    update: {},
+    create: { name: "Merchandising", icon: "merchandising" },
+  });
+  const cat9 = await prisma.category.upsert({
+    where: { id: 9 },
+    update: {},
+    create: { name: "Papelería", icon: "envelope-paper" },
+  });
+  const cat10 = await prisma.category.upsert({
+    where: { id: 10 },
+    update: {},
+    create: { name: "Fuerzas Seguridad", icon: "award" },
+  });
+  const cat11 = await prisma.category.upsert({
+    where: { id: 11 },
+    update: {},
+    create: { name: "Sellos", icon: "rubber-stamp" },
+  });
+  const cat12 = await prisma.category.upsert({
+    where: { id: 12 },
+    update: {},
+    create: { name: "Trofeos", icon: "trophy" },
+  });
+  const cat13 = await prisma.category.upsert({
+    where: { id: 13 },
+    update: {},
+    create: { name: "Grabados", icon: "laser-engravings-machine" },
   });
 
   // Subcategorías (dependen de categorías)
@@ -37,7 +94,7 @@ async function main() {
   });
 
   // Productos de ejemplo
-  const prod1 = await prisma.product.upsert({
+  /* const prod1 = await prisma.product.upsert({
     where: { id: 1 },
     update: { new_product: true, image: "/img/productos/bolso-1.jpg" },
     create: {
@@ -74,10 +131,10 @@ async function main() {
       tags: "deco, cerámica",
       new_product: false,
     },
-  });
+  }); */
 
   // Imágenes de ejemplo (public/img/productos/)
-  await prisma.image.upsert({
+  /* await prisma.image.upsert({
     where: { id: 1 },
     update: { src: "/img/productos/bolso-1.jpg" },
     create: { id_product: prod1.id, src: "/img/productos/bolso-1.jpg" },
@@ -96,7 +153,7 @@ async function main() {
     where: { id: 4 },
     update: { src: "/img/productos/jarron-3.jpg" },
     create: { id_product: prod2.id, src: "/img/productos/jarron-3.jpg" },
-  });
+  }); */
 
   await prisma.adminUser.upsert({
     where: { username: "admin" },
@@ -114,6 +171,26 @@ async function main() {
     create: {
       username: "editor",
       passwordHash: await bcrypt.hash(EDITOR_PASSWORD, 10),
+      role: "USER",
+    },
+  });
+
+  await prisma.adminUser.upsert({
+    where: { username: "fernando1967" },
+    update: {},
+    create: {
+      username: "fernando1967",
+      passwordHash: await bcrypt.hash(FERNANDO_PASSWORD, 10),
+      role: "ADMIN",
+    },
+  });
+
+  await prisma.adminUser.upsert({
+    where: { username: "textil" },
+    update: {},
+    create: {
+      username: "textil",
+      passwordHash: await bcrypt.hash(TEXTIL_PASSWORD, 10),
       role: "USER",
     },
   });
