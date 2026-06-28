@@ -66,7 +66,7 @@ export default function AddToCartModal({
         label: "Medida",
         options: parseOptionList(product.measures),
       },
-    ].filter((group) => group.options.length > 0);
+    ].filter((group): group is OptionGroup => group.options.length > 0);
   }, [product]);
 
   const quantityOptions = useMemo(

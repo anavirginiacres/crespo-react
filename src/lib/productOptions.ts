@@ -25,7 +25,7 @@ export function getProductOptionGroups(product: {
       label: "Medida",
       options: parseOptionList(product.measures),
     },
-  ].filter((group) => group.options.length > 0);
+  ].filter((group): group is ProductOptionGroup => group.options.length > 0);
 }
 
 export function getDefaultOptionSelections(
