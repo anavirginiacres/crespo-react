@@ -14,9 +14,11 @@ export default function ScrollReveal({
   children,
   className = "",
   delay = 0,
-  as: Tag = "div",
+  as = "div",
 }: ScrollRevealProps) {
-  const ref = useRef<HTMLElement>(null);
+  const divRef = useRef<HTMLDivElement>(null);
+  const liRef = useRef<HTMLLIElement>(null);
+  const ref = as === "li" ? liRef : divRef;
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -47,15 +49,22 @@ export default function ScrollReveal({
 
     observer.observe(element);
     return () => observer.disconnect();
-  }, []);
+  }, [ref]);
+
+  const revealClassName = `${styles.reveal}${isVisible ? ` ${styles.revealVisible}` : ""} ${className}`;
+  const revealStyle = { transitionDelay: `${delay}ms` };
+
+  if (as === "li") {
+    return (
+      <li ref={liRef} className={revealClassName} style={revealStyle}>
+        {children}
+      </li>
+    );
+  }
 
   return (
-    <Tag
-      ref={ref}
-      className={`${styles.reveal}${isVisible ? ` ${styles.revealVisible}` : ""} ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
-    >
+    <div ref={divRef} className={revealClassName} style={revealStyle}>
       {children}
-    </Tag>
+    </div>
   );
 }
