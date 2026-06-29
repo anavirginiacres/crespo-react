@@ -1,0 +1,47 @@
+@use "../../styles/variables" as *;
+
+.controls {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-8;
+}
+
+.button {
+  width: 36px;
+  height: 36px;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-sm;
+  background: $white;
+  font-size: $fs-16;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $brand-blue;
+    color: $brand-blue;
+  }
+}
+
+.value {
+  min-width: 24px;
+  text-align: center;
+  font-weight: $fw-bold;
+}
+
+.select {
+  min-width: 120px;
+  padding: $spacing-8 $spacing-12;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-sm;
+  background: $white;
+  font: inherit;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  color: $brand-black;
+  cursor: pointer;
+  transition: border-color $transition-md;
+
+  &:focus {
+    outline: none;
+    border-color: $brand-blue;
+  }
+}

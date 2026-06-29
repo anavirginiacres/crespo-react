@@ -26,3 +26,13 @@ yarn-error.log*
 # prisma
 prisma/*.db
 prisma/*.db-journal
+
+# PHP deploy config (credentials)
+api/config.php
+
+# Vite build output
+dist/
+
+# frontend
+frontend/node_modules/
+frontend/dist/

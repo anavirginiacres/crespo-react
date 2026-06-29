@@ -1,39 +1,11 @@
 {
   "name": "crespo-react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "description": "FF Crespo — React + PHP + MySQL para Wiros",
   "scripts": {
-    "dev": "next dev",
-    "build": "npx prisma generate && next build",
-    "start": "next start",
-    "lint": "next lint",
-    "postinstall": "npx prisma generate",
-    "db:push": "npx prisma db push",
-    "db:studio": "npx prisma studio",
-    "db:seed": "node prisma/seed.js"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
-  },
-  "dependencies": {
-    "@prisma/client": "^5.22.0",
-    "bcryptjs": "^3.0.3",
-    "dotenv": "^16.4.5",
-    "next": "13.5.6",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "sass": "^1.101.0",
-    "sharp": "^0.35.2"
-  },
-  "devDependencies": {
-    "@types/bcryptjs": "^3.0.0",
-    "@types/node": "^20.11.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "13.5.6",
-    "prisma": "^5.22.0",
-    "tsconfig-paths": "^3.15.0",
-    "typescript": "^5.4.0"
+    "dev": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "install:frontend": "npm install --prefix frontend"
   }
 }
