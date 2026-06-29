@@ -1,0 +1,415 @@
+@use "../../styles/variables" as *;
+
+.hero {
+  position: relative;
+  margin: var(--header-height) -32px 0;
+  width: calc(100% + 64px);
+  min-height: clamp(520px, 82vh, 720px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(145deg, #0d1117 0%, $brand-black 45%, #1a1f2e 100%);
+  border-radius: 0 0 $border-radius-xl $border-radius-xl;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.orbPink,
+.orbBlue,
+.orbYellow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  animation: float 8s ease-in-out infinite;
+}
+
+.orbPink {
+  width: 320px;
+  height: 320px;
+  background: $brand-pink;
+  top: -80px;
+  right: 10%;
+  animation-delay: 0s;
+}
+
+.orbBlue {
+  width: 280px;
+  height: 280px;
+  background: $brand-blue;
+  bottom: -60px;
+  left: 5%;
+  animation-delay: -2s;
+}
+
+.orbYellow {
+  width: 200px;
+  height: 200px;
+  background: $brand-yellow;
+  top: 40%;
+  left: 45%;
+  opacity: 0.35;
+  animation-delay: -4s;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba($white, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba($white, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 48px;
+  box-sizing: border-box;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: $font-secondary;
+  font-size: $fs-14;
+  font-weight: $fw-medium;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $brand-blue;
+  animation: fadeUp 0.6s ease both;
+}
+
+.title {
+  margin: 0;
+  font-family: $font-primary;
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  line-height: 1.05;
+  color: $white;
+  animation: fadeUp 0.6s ease 0.1s both;
+}
+
+.titleAccent {
+  color: $brand-pink;
+}
+
+.titleAccentAlt {
+  color: $brand-yellow;
+}
+
+.description {
+  margin: 0;
+  max-width: 480px;
+  font-size: clamp($fs-16, 2vw, 1.125rem);
+  line-height: 1.6;
+  color: rgba($white, 0.75);
+  animation: fadeUp 0.6s ease 0.2s both;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: fadeUp 0.6s ease 0.3s both;
+
+  li {
+    padding: 6px 14px;
+    border: 1px solid rgba($white, 0.15);
+    border-radius: 999px;
+    font-size: $fs-12;
+    font-weight: $fw-medium;
+    color: rgba($white, 0.85);
+    background: rgba($white, 0.06);
+    backdrop-filter: blur(4px);
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  animation: fadeUp 0.6s ease 0.4s both;
+}
+
+.primaryCta,
+.secondaryCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  border-radius: $border-radius-md;
+  font-family: $font-default;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  text-decoration: none;
+  transition: transform $transition-md, box-shadow $transition-md,
+    background $transition-md;
+}
+
+.primaryCta {
+  background: $brand-pink;
+  color: $white !important;
+  box-shadow: 0 8px 24px rgba($brand-pink, 0.35);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba($brand-pink, 0.45);
+    text-decoration: none;
+  }
+}
+
+.secondaryCta {
+  border: 1px solid rgba($white, 0.25);
+  color: $white !important;
+  background: rgba($white, 0.06);
+
+  &:hover {
+    background: rgba($white, 0.12);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+}
+
+.visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 340px;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.visualCard {
+  width: min(100%, 360px);
+  border-radius: $border-radius-lg;
+  background: rgba($white, 0.08);
+  border: 1px solid rgba($white, 0.12);
+  backdrop-filter: blur(12px);
+  box-shadow: $box-shadow-2xl;
+  overflow: hidden;
+  transform: perspective(800px) rotateY(-8deg) rotateX(4deg);
+  transition: transform $transition-lg;
+
+  &:hover {
+    transform: perspective(800px) rotateY(0deg) rotateX(0deg);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  gap: 6px;
+  padding: 12px 16px;
+  background: rgba($black, 0.25);
+  border-bottom: 1px solid rgba($white, 0.08);
+}
+
+.cardDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba($white, 0.2);
+
+  &:first-child {
+    background: $brand-pink;
+  }
+
+  &:nth-child(2) {
+    background: $brand-yellow;
+  }
+
+  &:nth-child(3) {
+    background: $brand-blue;
+  }
+}
+
+.cardBody {
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cardLogo {
+  width: auto;
+  height: 48px;
+  object-fit: contain;
+  object-position: left;
+}
+
+.cardLines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  span {
+    display: block;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba($white, 0.12);
+
+    &:nth-child(1) {
+      width: 100%;
+    }
+
+    &:nth-child(2) {
+      width: 85%;
+    }
+  }
+}
+
+.cardLineShort {
+  width: 55% !important;
+}
+
+.cardSwatches {
+  display: flex;
+  gap: 10px;
+}
+
+.swatchPink,
+.swatchBlue,
+.swatchYellow {
+  width: 36px;
+  height: 36px;
+  border-radius: $border-radius-sm;
+  border: 2px solid rgba($white, 0.2);
+}
+
+.swatchPink {
+  background: $brand-pink;
+}
+
+.swatchBlue {
+  background: $brand-blue;
+}
+
+.swatchYellow {
+  background: $brand-yellow;
+}
+
+.floatingBadge {
+  position: absolute;
+  bottom: 12%;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 20px;
+  background: $brand-blue;
+  border-radius: $border-radius-md;
+  box-shadow: 0 12px 32px rgba($brand-blue, 0.4);
+  animation: float 6s ease-in-out infinite;
+  animation-delay: -1s;
+}
+
+.badgeValue {
+  font-family: $font-primary;
+  font-size: $fs-32;
+  line-height: 1;
+  color: $white;
+}
+
+.badgeLabel {
+  font-size: $fs-12;
+  font-weight: $fw-medium;
+  color: rgba($white, 0.85);
+  white-space: nowrap;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+  .hero {
+    margin-left: -32px;
+    margin-right: -32px;
+    width: calc(100% + 64px);
+    min-height: auto;
+    border-radius: 0 0 $border-radius-lg $border-radius-lg;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 48px 24px;
+  }
+
+  .visual {
+    min-height: 280px;
+    order: -1;
+  }
+
+  .visualCard {
+    transform: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  .floatingBadge {
+    bottom: 0;
+    right: 8px;
+    padding: 12px 16px;
+  }
+
+  .badgeValue {
+    font-size: $fs-24;
+  }
+
+  .actions {
+    flex-direction: column;
+
+    .primaryCta,
+    .secondaryCta {
+      width: auto;
+    }
+  }
+
+  .swatchPink,
+  .swatchBlue,
+  .swatchYellow {
+    width: 24px;
+    height: 24px;
+  }
+}

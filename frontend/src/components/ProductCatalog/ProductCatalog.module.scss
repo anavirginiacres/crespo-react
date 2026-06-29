@@ -1,0 +1,731 @@
+@use "../../styles/variables" as *;
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.catalog {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-32;
+}
+
+.catalogHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: $spacing-24;
+  flex-wrap: wrap;
+}
+
+.catalogEyebrow {
+  margin: 0 0 $spacing-8;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $brand-pink;
+}
+
+.catalogTitle {
+  margin: 0;
+  font-family: $font-primary;
+  font-size: clamp(2rem, 4vw, $fs-48);
+  line-height: 1.05;
+  color: $brand-black;
+}
+
+.catalogDescription {
+  margin: $spacing-12 0 0;
+  max-width: 640px;
+  font-size: $fs-16;
+  line-height: 1.6;
+  color: $brand-dark-grey;
+}
+
+.resultsCount {
+  margin: 0;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  color: $brand-blue;
+  white-space: nowrap;
+}
+
+.catalogLayout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: $spacing-32;
+  align-items: start;
+}
+
+.filtersPanel {
+  position: sticky;
+  top: calc(var(--header-height) + #{$spacing-16});
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-24;
+  padding: $spacing-24;
+  background: $brand-light-grey;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-lg;
+}
+
+.filtersToggle {
+  display: none;
+}
+
+.filtersCollapse {
+  display: contents;
+}
+
+.filtersCollapseInner {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-24;
+}
+
+.filtersToggleLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-8;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  color: $brand-black;
+}
+
+.filtersToggleBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 $spacing-8;
+  border-radius: 999px;
+  background: $brand-blue;
+  color: $white;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  line-height: 1;
+}
+
+.filtersToggleIcon {
+  font-size: $fs-16;
+  line-height: 1;
+  color: $brand-blue;
+  transition: transform $transition-md;
+}
+
+.filtersToggleIconOpen {
+  transform: rotate(180deg);
+}
+
+.filterBlock {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+}
+
+.filterLabel {
+  margin: 0;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $brand-black;
+}
+
+.sortSelect {
+  width: 100%;
+  padding: $spacing-12 $spacing-16;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-md;
+  background: $white;
+  font: inherit;
+  color: $brand-black;
+  box-sizing: border-box;
+  transition: border-color $transition-md;
+
+  &:focus {
+    outline: none;
+    border-color: $brand-blue;
+  }
+}
+
+@mixin close-icon-button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: $brand-dark-grey;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+
+  &:hover {
+    color: $brand-black;
+  }
+}
+
+.searchField {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: $white;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  transition: border-color $transition-md;
+
+  &:focus-within {
+    border-color: $brand-blue;
+  }
+}
+
+.catalogSearchInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  padding: $spacing-12 $spacing-16;
+  font: inherit;
+  font-size: $fs-14;
+  color: $brand-black;
+  background: transparent;
+
+  &::placeholder {
+    color: $brand-dark-grey;
+  }
+}
+
+.searchClear {
+  @include close-icon-button;
+}
+
+.checkboxList,
+.subcategoryList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checkboxList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-12;
+}
+
+.subcategoryList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+  margin-top: $spacing-8;
+  padding-left: $spacing-16;
+  border-left: 2px solid rgba($brand-blue, 0.2);
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-12;
+  font-size: $fs-14;
+  color: $brand-black;
+  cursor: pointer;
+
+  input {
+    width: 16px;
+    height: 16px;
+    accent-color: $brand-blue;
+  }
+}
+
+.catalogMain {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-24;
+  min-width: 0;
+}
+
+.pillsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-16;
+  flex-wrap: wrap;
+}
+
+.pillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-8;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-8;
+  padding: $spacing-8 $spacing-12;
+  border: 1px solid rgba($brand-blue, 0.25);
+  border-radius: 999px;
+  background: rgba($brand-blue, 0.08);
+  color: $brand-black;
+  font-size: $fs-12;
+  font-weight: $fw-medium;
+  cursor: pointer;
+  transition:
+    background $transition-md,
+    border-color $transition-md;
+
+  &:hover {
+    background: rgba($brand-blue, 0.14);
+    border-color: rgba($brand-blue, 0.4);
+  }
+}
+
+.pillRemove {
+  font-size: $fs-16;
+  line-height: 1;
+  color: $brand-blue;
+}
+
+.clearFiltersButton {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  color: $brand-pink;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: $spacing-24;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: $white;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  transition: box-shadow $transition-lg;
+
+  &:hover {
+    box-shadow: $box-shadow-lg;
+  }
+}
+
+.cardMediaLink {
+  display: block;
+  text-decoration: none;
+}
+
+.cardMedia {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: $brand-light-grey;
+}
+
+.cardImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.cardPlaceholderLogo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+  padding: $spacing-16;
+  flex: 1;
+}
+
+.cardCategory {
+  margin: 0;
+  font-size: $fs-12;
+  font-weight: $fw-medium;
+  color: $brand-blue;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: $fs-16;
+  line-height: 1.3;
+
+  a {
+    color: $brand-black;
+    text-decoration: none;
+
+    &:hover {
+      color: $brand-pink;
+      text-decoration: none;
+    }
+  }
+}
+
+.cardCaption {
+  margin: 0;
+  font-size: $fs-14;
+  line-height: 1.5;
+  color: $brand-dark-grey;
+}
+
+.cardPrice {
+  margin: $spacing-4 0 0;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  color: $brand-black;
+}
+
+.cardActions {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+  margin-top: auto;
+  padding-top: $spacing-12;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 42px;
+  padding: $spacing-12 $spacing-16;
+  border-radius: $border-radius-md;
+  font: inherit;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform $transition-md,
+    background $transition-md,
+    color $transition-md,
+    border-color $transition-md;
+}
+
+.primaryButton {
+  border: 0;
+  background: $brand-pink;
+  color: $white;
+
+  &:hover {
+    background: #c40067;
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+}
+
+.secondaryButton {
+  border: 1px solid $brand-grey;
+  background: $white;
+  color: $brand-black;
+  width: auto;
+  min-height: unset;
+
+  &:hover {
+    border-color: $brand-blue;
+    color: $brand-blue;
+    text-decoration: none;
+  }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $spacing-12;
+  padding: $spacing-32;
+  border: 1px dashed $brand-grey;
+  border-radius: $border-radius-lg;
+  background: $brand-light-grey;
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    font-size: $fs-24;
+  }
+
+  p {
+    color: $brand-dark-grey;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-24;
+  background: rgba($black, 0.55);
+}
+
+.modal {
+  position: relative;
+  width: min(100%, 480px);
+  max-height: calc(100vh - #{$spacing-64});
+  overflow: auto;
+  padding: $spacing-24;
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-2xl;
+}
+
+.modalClose {
+  position: absolute;
+  top: $spacing-12;
+  right: $spacing-12;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: $brand-light-grey;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modalTitle {
+  margin: 0 0 $spacing-16;
+  font-family: $font-primary;
+  font-size: $fs-20;
+  line-height: $lh-20;
+}
+
+.modalProductName {
+  margin: 0 0 $spacing-32;
+  font-size: $fs-20;
+  line-height: $lh-20;
+  font-weight: $fw-bold;
+  color: $brand-blue;
+}
+
+.modalHint {
+  margin: 0 0 $spacing-16;
+  font-size: $fs-14;
+  line-height: 1.5;
+  color: $brand-dark-grey;
+}
+
+.optionGroup {
+  margin: 0 0 $spacing-16;
+  padding: 0;
+  border: 0;
+}
+
+.optionLegend {
+  margin-bottom: $spacing-8;
+  font-size: $fs-12;
+  font-weight: $fw-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $brand-black;
+}
+
+.optionList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-8;
+}
+
+.optionButton {
+  padding: $spacing-8 $spacing-12;
+  border: 1px solid $brand-grey;
+  border-radius: 999px;
+  background: $white;
+  font: inherit;
+  font-size: $fs-14;
+  cursor: pointer;
+  transition:
+    border-color $transition-md,
+    background $transition-md,
+    color $transition-md;
+
+  &:hover {
+    border-color: $brand-blue;
+  }
+}
+
+.optionButtonActive {
+  border-color: $brand-blue;
+  background: rgba($brand-blue, 0.1);
+  color: $brand-blue;
+}
+
+.quantityRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-16;
+  margin-bottom: $spacing-16;
+}
+
+.quantityControls {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-12;
+}
+
+.quantityButton {
+  width: 36px;
+  height: 36px;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-sm;
+  background: $white;
+  font-size: $fs-16;
+  cursor: pointer;
+}
+
+.quantityValue {
+  min-width: 24px;
+  text-align: center;
+  font-weight: $fw-bold;
+}
+
+.quantitySelect {
+  min-width: 120px;
+  padding: $spacing-8 $spacing-12;
+  border: 1px solid $brand-grey;
+  border-radius: $border-radius-sm;
+  background: $white;
+  font: inherit;
+  font-size: $fs-14;
+  font-weight: $fw-bold;
+  color: $brand-black;
+  cursor: pointer;
+  transition: border-color $transition-md;
+
+  &:focus {
+    outline: none;
+    border-color: $brand-blue;
+  }
+}
+
+.modalError {
+  margin: 0 0 $spacing-16;
+  font-size: $fs-14;
+  color: $brand-pink;
+}
+
+.modalActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-12;
+}
+
+@media (max-width: $breakpoint-lg) {
+  .catalogLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .filtersPanel {
+    position: static;
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .catalogHeader {
+    align-items: flex-start;
+  }
+
+  .filtersPanel {
+    gap: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .filtersToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: $spacing-16 $spacing-24;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .filtersCollapse {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows $transition-lg;
+  }
+
+  .filtersCollapseOpen {
+    grid-template-rows: 1fr;
+  }
+
+  .filtersCollapseInner {
+    overflow: hidden;
+    padding: 0 $spacing-24;
+    transition: padding $transition-lg;
+  }
+
+  .filtersCollapseOpen .filtersCollapseInner {
+    padding: 0 $spacing-24 $spacing-24;
+  }
+
+  .modalActions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primaryButton:hover {
+    transform: none;
+  }
+
+  .filtersCollapse {
+    transition: none;
+  }
+
+  .filtersCollapseInner {
+    transition: none;
+  }
+
+  .filtersToggleIcon {
+    transition: none;
+  }
+}

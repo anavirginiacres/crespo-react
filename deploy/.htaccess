@@ -1,0 +1,18 @@
+RewriteEngine On
+
+# Si el sitio vive en un subdirectorio (ej. /mi-carpeta/), descomentar:
+# RewriteBase /mi-carpeta/
+
+# API PHP
+RewriteRule ^api/(.*)$ api/index.php [QSA,L]
+
+# Evita que Apache trate rutas como /productos como carpetas virtuales
+Options -MultiViews
+
+# Archivos y carpetas reales (assets, fonts, favicon, img, etc.)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# SPA React Router — cualquier otra ruta sirve index.html
+RewriteRule ^ index.html [L]
