@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import Link from "@/components/common/Link";
 import type { CategoryNav } from "@/lib/categories";
 import { buildCategoryProductosUrl } from "@/lib/slug";
@@ -15,6 +16,22 @@ export default function CategoriesDrawer({
   onClose,
   categories,
 }: CategoriesDrawerProps) {
+  const [expandedCategoryIds, setExpandedCategoryIds] = useState<Set<number>>(
+    () => new Set()
+  );
+
+  const toggleCategoryDropdown = (categoryId: number) => {
+    setExpandedCategoryIds((current) => {
+      const next = new Set(current);
+      if (next.has(categoryId)) {
+        next.delete(categoryId);
+      } else {
+        next.add(categoryId);
+      }
+      return next;
+    });
+  };
+
   return (
     <>
       <div
@@ -46,18 +63,47 @@ export default function CategoriesDrawer({
           </Link>
 
           <ul className={styles.categoriesList}>
-            {categories.map((category) => (
-              <li key={category.id} className={styles.categoryGroup}>
-                <Link
-                  href={buildCategoryProductosUrl(category.slug)}
-                  className={styles.categoryLink}
-                  onClick={onClose}
-                >
-                  {category.name}
-                </Link>
+            {categories.map((category) => {
+              const hasSubcategories = category.subcategories.length > 0;
+              const isExpanded = expandedCategoryIds.has(category.id);
 
-                {category.subcategories.length > 0 && (
-                  <ul className={styles.subcategoryList}>
+              return (
+              <li key={category.id} className={styles.categoryGroup}>
+                <div className={styles.categoryGroupHeader}>
+                  <Link
+                    href={buildCategoryProductosUrl(category.slug)}
+                    className={styles.categoryLink}
+                    onClick={onClose}
+                  >
+                    {category.name}
+                  </Link>
+
+                  {hasSubcategories && (
+                    <button
+                      type="button"
+                      className={styles.categoryDropdownToggle}
+                      aria-expanded={isExpanded}
+                      aria-controls={`drawer-subcategories-${category.id}`}
+                      aria-label={`${isExpanded ? "Ocultar" : "Mostrar"} subcategorías de ${category.name}`}
+                      onClick={() => toggleCategoryDropdown(category.id)}
+                    >
+                      <span
+                        className={`${styles.categoryDropdownIcon}${
+                          isExpanded ? ` ${styles.categoryDropdownIconOpen}` : ""
+                        }`}
+                        aria-hidden="true"
+                      >
+                        ▾
+                      </span>
+                    </button>
+                  )}
+                </div>
+
+                {hasSubcategories && isExpanded && (
+                  <ul
+                    id={`drawer-subcategories-${category.id}`}
+                    className={styles.subcategoryList}
+                  >
                     {category.subcategories.map((subcategory) => (
                       <li key={subcategory.id}>
                         <Link
@@ -75,7 +121,8 @@ export default function CategoriesDrawer({
                   </ul>
                 )}
               </li>
-            ))}
+              );
+            })}
           </ul>
         </div>
       </aside>

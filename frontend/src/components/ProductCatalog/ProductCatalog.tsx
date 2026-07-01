@@ -47,6 +47,39 @@ export default function ProductCatalog({
   );
   const [modalProduct, setModalProduct] = useState<CatalogProduct | null>(null);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [expandedCategoryIds, setExpandedCategoryIds] = useState<Set<number>>(
+    () => {
+      const ids = new Set<number>();
+      for (const category of categories) {
+        const hasSelectedSubcategory = category.subcategories.some((subcategory) =>
+          (initialFilters?.subcategoryIds ?? []).includes(subcategory.id)
+        );
+        if (hasSelectedSubcategory) {
+          ids.add(category.id);
+        }
+      }
+      return ids;
+    }
+  );
+
+  const toggleCategoryDropdown = (categoryId: number) => {
+    setExpandedCategoryIds((current) => {
+      const next = new Set(current);
+      if (next.has(categoryId)) {
+        next.delete(categoryId);
+      } else {
+        next.add(categoryId);
+      }
+      return next;
+    });
+  };
+
+  const isCategoryExpanded = (category: CategoryNav) => {
+    const hasSelectedSubcategory = category.subcategories.some((subcategory) =>
+      filters.subcategoryIds.includes(subcategory.id)
+    );
+    return hasSelectedSubcategory || expandedCategoryIds.has(category.id);
+  };
 
   const handleAddToCart = useCallback((product: CatalogProduct) => {
     setModalProduct(product);
@@ -279,19 +312,48 @@ export default function ProductCatalog({
           <div className={styles.filterBlock}>
             <p className={styles.filterLabel}>Categorías</p>
             <ul className={styles.checkboxList}>
-              {categories.map((category) => (
-                <li key={category.id}>
-                  <label className={styles.checkboxItem}>
-                    <input
-                      type="checkbox"
-                      checked={filters.categoryIds.includes(category.id)}
-                      onChange={() => toggleCategory(category.id)}
-                    />
-                    <span>{category.name}</span>
-                  </label>
+              {categories.map((category) => {
+                const hasSubcategories = category.subcategories.length > 0;
+                const isExpanded = isCategoryExpanded(category);
 
-                  {category.subcategories.length > 0 && (
-                    <ul className={styles.subcategoryList}>
+                return (
+                <li key={category.id} className={styles.categoryFilterItem}>
+                  <div className={styles.categoryFilterRow}>
+                    <label className={styles.checkboxItem}>
+                      <input
+                        type="checkbox"
+                        checked={filters.categoryIds.includes(category.id)}
+                        onChange={() => toggleCategory(category.id)}
+                      />
+                      <span>{category.name}</span>
+                    </label>
+
+                    {hasSubcategories && (
+                      <button
+                        type="button"
+                        className={styles.categoryDropdownToggle}
+                        aria-expanded={isExpanded}
+                        aria-controls={`catalog-subcategories-${category.id}`}
+                        aria-label={`${isExpanded ? "Ocultar" : "Mostrar"} subcategorías de ${category.name}`}
+                        onClick={() => toggleCategoryDropdown(category.id)}
+                      >
+                        <span
+                          className={`${styles.categoryDropdownIcon}${
+                            isExpanded ? ` ${styles.categoryDropdownIconOpen}` : ""
+                          }`}
+                          aria-hidden="true"
+                        >
+                          ▾
+                        </span>
+                      </button>
+                    )}
+                  </div>
+
+                  {hasSubcategories && isExpanded && (
+                    <ul
+                      id={`catalog-subcategories-${category.id}`}
+                      className={styles.subcategoryList}
+                    >
                       {category.subcategories.map((subcategory) => (
                         <li key={subcategory.id}>
                           <label className={styles.checkboxItem}>
@@ -311,7 +373,8 @@ export default function ProductCatalog({
                     </ul>
                   )}
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </div>
             </div>

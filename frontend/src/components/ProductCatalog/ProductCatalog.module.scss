@@ -227,6 +227,50 @@
   gap: $spacing-12;
 }
 
+.categoryFilterItem {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+}
+
+.categoryFilterRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-8;
+}
+
+.categoryDropdownToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: $border-radius-md;
+  background: transparent;
+  color: $brand-blue;
+  cursor: pointer;
+  transition: background $transition-md;
+
+  &:hover {
+    background: rgba($brand-blue, 0.08);
+  }
+}
+
+.categoryDropdownIcon {
+  display: inline-block;
+  font-size: $fs-16;
+  line-height: 1;
+  transition: transform $transition-md;
+}
+
+.categoryDropdownIconOpen {
+  transform: rotate(180deg);
+}
+
 .subcategoryList {
   display: flex;
   flex-direction: column;
@@ -240,6 +284,8 @@
   display: flex;
   align-items: center;
   gap: $spacing-12;
+  flex: 1;
+  min-width: 0;
   font-size: $fs-14;
   color: $brand-black;
   cursor: pointer;
