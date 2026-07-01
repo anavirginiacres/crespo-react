@@ -744,7 +744,47 @@
   gap: 8px;
 }
 
+.categoryGroupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.categoryDropdownToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: $border-radius-md;
+  background: transparent;
+  color: $brand-blue;
+  cursor: pointer;
+  transition: background $transition-md;
+
+  &:hover {
+    background: $brand-grey;
+  }
+}
+
+.categoryDropdownIcon {
+  display: inline-block;
+  font-size: $fs-16;
+  line-height: 1;
+  transition: transform $transition-md;
+}
+
+.categoryDropdownIconOpen {
+  transform: rotate(180deg);
+}
+
 .categoryLink {
+  flex: 1;
+  min-width: 0;
   font-family: $font-primary;
   font-size: $fs-16;
   color: $brand-black;
